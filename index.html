@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OGTI — 大喜利タイプ診断</title>
+  <meta name="description" content="Oogiri Type Indicator — 4軸16タイプで、あなたの大喜利の流儀を診断します。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app">
+
+    <!-- Landing -->
+    <section id="screen-landing" class="screen active">
+      <header class="brand">
+        <h1 class="brand-title">OGTI<span class="accent">.</span></h1>
+        <p class="brand-sub">OOGIRI TYPE INDICATOR</p>
+      </header>
+
+      <div class="lead">
+        <p>OGTI は、あなたの<strong>大喜利の流儀</strong>を4軸16タイプで診断します。半分ジョーク、半分本気。</p>
+        <p>全16問。お題と回答を読み、自分に近いほうを直感で選んでください。</p>
+        <ul class="axes-intro">
+          <li><span>Aggressive <small>挑戦</small></span><span class="vs">↔</span><span>Elegant <small>洗練</small></span></li>
+          <li><span>Unique <small>独自</small></span><span class="vs">↔</span><span>Relatable <small>共感</small></span></li>
+          <li><span>Playful <small>剽軽</small></span><span class="vs">↔</span><span>Intelligent <small>知性</small></span></li>
+          <li><span>Theatrical <small>演技</small></span><span class="vs">↔</span><span>Descriptive <small>解説</small></span></li>
+        </ul>
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-start" class="btn btn-primary" type="button">診断を始める</button>
+      </div>
+    </section>
+
+    <!-- Quiz -->
+    <section id="screen-quiz" class="screen">
+      <div class="progress">
+        <span id="progress-text">Q1 / 16</span>
+        <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
+      </div>
+
+      <div class="question">
+        <p id="question-prompt" class="question-prompt"></p>
+        <div id="choices" class="choices"></div>
+      </div>
+
+      <div class="quiz-nav">
+        <button id="btn-back" class="btn" type="button">← 前の設問</button>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section id="screen-result" class="screen">
+      <div class="result-card">
+        <p id="result-code" class="result-code"></p>
+        <h2 id="result-name" class="result-name"></h2>
+        <p id="result-tagline" class="result-tagline"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>軸ごとの傾向</h3>
+        <div id="result-axes"></div>
+      </div>
+
+      <div class="result-section">
+        <h3>ハマったときの強み</h3>
+        <p id="result-strength"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>滑るときの癖</h3>
+        <p id="result-weakness"></p>
+      </div>
+
+      <div class="result-section">
+        <h3>相性の良い相方</h3>
+        <p id="result-partner"></p>
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-share" class="btn" type="button">結果をシェア</button>
+        <button id="btn-restart" class="btn btn-primary" type="button">もう一度診断する</button>
+      </div>
+    </section>
+
+    <footer class="site-foot">OGTI — 半分ジョーク、半分本気の大喜利診断</footer>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
