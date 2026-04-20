@@ -79,11 +79,6 @@ function renderQuestion() {
   const likert = document.createElement('div');
   likert.className = 'likert';
 
-  const caption = document.createElement('div');
-  caption.className = 'likert-caption';
-  caption.innerHTML = '<span>Aに寄せる</span><span>Bに寄せる</span>';
-  likert.appendChild(caption);
-
   const btnRow = document.createElement('div');
   btnRow.className = 'likert-buttons';
 
@@ -106,6 +101,12 @@ function renderQuestion() {
     btnRow.appendChild(btn);
   }
   likert.appendChild(btnRow);
+
+  const caption = document.createElement('div');
+  caption.className = 'likert-caption';
+  caption.innerHTML = '<span>Aに寄せる</span><span>Bに寄せる</span>';
+  likert.appendChild(caption);
+
   container.appendChild(likert);
 
   document.getElementById('btn-back').disabled = state.index === 0;
