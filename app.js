@@ -4,7 +4,21 @@ import { types } from './types.js';
 const state = {
   answers: [], // { pole: 'A', strength: 1..3 } or undefined
   index: 0,
+  shuffled: [], // ランダム化された設問 (セッション開始時に確定)
 };
+
+function shuffleQuestions(src) {
+  const arr = src.map((q) => {
+    const choices = Math.random() < 0.5 ? [q.choices[1], q.choices[0]] : [q.choices[0], q.choices[1]];
+    return { ...q, choices };
+  });
+  // Fisher-Yates
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
 const screens = {
   landing: document.getElementById('screen-landing'),
@@ -31,13 +45,14 @@ function show(name) {
 function start() {
   state.answers = [];
   state.index = 0;
+  state.shuffled = shuffleQuestions(questions);
   renderQuestion();
   show('quiz');
 }
 
 function renderQuestion() {
-  const q = questions[state.index];
-  const total = questions.length;
+  const q = state.shuffled[state.index];
+  const total = state.shuffled.length;
   const i = state.index + 1;
 
   document.getElementById('progress-text').textContent = `Q${i} / ${total}`;
@@ -97,12 +112,12 @@ function renderQuestion() {
 }
 
 function answer(value) {
-  const q = questions[state.index];
+  const q = state.shuffled[state.index];
   const pole = value < 0 ? q.choices[0].pole : q.choices[1].pole;
   const strength = Math.abs(value);
   state.answers[state.index] = { pole, strength };
 
-  if (state.index === questions.length - 1) {
+  if (state.index === state.shuffled.length - 1) {
     finish();
   } else {
     state.index++;
