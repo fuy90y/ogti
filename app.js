@@ -2,7 +2,7 @@ import { questions } from './questions.js';
 import { types } from './types.js';
 
 const state = {
-  answers: [],
+  answers: [], // { pole: 'A', strength: 1..3 } or undefined
   index: 0,
 };
 
@@ -11,6 +11,15 @@ const screens = {
   quiz: document.getElementById('screen-quiz'),
   result: document.getElementById('screen-result'),
 };
+
+const LIKERT_BUTTONS = [
+  { value: -3, label: 'A強',  side: 'a' },
+  { value: -2, label: 'A',    side: 'a' },
+  { value: -1, label: 'ややA', side: 'a' },
+  { value:  1, label: 'ややB', side: 'b' },
+  { value:  2, label: 'B',    side: 'b' },
+  { value:  3, label: 'B強',  side: 'b' },
+];
 
 function show(name) {
   for (const key of Object.keys(screens)) {
@@ -35,24 +44,64 @@ function renderQuestion() {
   document.getElementById('progress-bar').style.width = `${((i - 1) / total) * 100}%`;
   document.getElementById('question-prompt').textContent = q.prompt;
 
-  const choicesEl = document.getElementById('choices');
-  choicesEl.innerHTML = '';
+  const container = document.getElementById('choices');
+  container.innerHTML = '';
+
+  // Two-choice display (A on top/left, B on bottom/right)
+  const pair = document.createElement('div');
+  pair.className = 'choice-pair';
   q.choices.forEach((c, idx) => {
+    const card = document.createElement('div');
+    card.className = `choice-display choice-${idx === 0 ? 'a' : 'b'}`;
+    const label = idx === 0 ? 'A' : 'B';
+    card.innerHTML = `<span class="choice-label">${label}</span><span class="choice-text"></span>`;
+    card.querySelector('.choice-text').textContent = c.text;
+    pair.appendChild(card);
+  });
+  container.appendChild(pair);
+
+  // Likert scale
+  const likert = document.createElement('div');
+  likert.className = 'likert';
+
+  const caption = document.createElement('div');
+  caption.className = 'likert-caption';
+  caption.innerHTML = '<span>Aに寄せる</span><span>Bに寄せる</span>';
+  likert.appendChild(caption);
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'likert-buttons';
+
+  const prev = state.answers[state.index];
+  const prevValue = prev
+    ? (prev.pole === q.choices[0].pole ? -prev.strength : prev.strength)
+    : null;
+
+  for (const b of LIKERT_BUTTONS) {
     const btn = document.createElement('button');
-    btn.className = 'choice';
     btn.type = 'button';
-    btn.innerHTML = `<span class="choice-label">${idx === 0 ? 'A' : 'B'}</span><span class="choice-text">${c.text}</span>`;
-    btn.addEventListener('click', () => answer(c.pole));
+    btn.className = `likert-btn likert-${b.side}`;
+    btn.dataset.value = b.value;
+    btn.innerHTML = `<span class="likert-dot"></span><span class="likert-txt"></span>`;
+    btn.querySelector('.likert-txt').textContent = b.label;
+    if (prevValue === b.value) btn.classList.add('selected');
+    btn.addEventListener('click', () => answer(b.value));
     btn.addEventListener('mouseenter', () => btn.classList.add('is-hover'));
     btn.addEventListener('mouseleave', () => btn.classList.remove('is-hover'));
-    choicesEl.appendChild(btn);
-  });
+    btnRow.appendChild(btn);
+  }
+  likert.appendChild(btnRow);
+  container.appendChild(likert);
 
   document.getElementById('btn-back').disabled = state.index === 0;
 }
 
-function answer(pole) {
-  state.answers[state.index] = pole;
+function answer(value) {
+  const q = questions[state.index];
+  const pole = value < 0 ? q.choices[0].pole : q.choices[1].pole;
+  const strength = Math.abs(value);
+  state.answers[state.index] = { pole, strength };
+
   if (state.index === questions.length - 1) {
     finish();
   } else {
@@ -69,7 +118,9 @@ function back() {
 
 function computeResult() {
   const score = { A: 0, E: 0, U: 0, R: 0, P: 0, I: 0, T: 0, D: 0 };
-  for (const p of state.answers) score[p]++;
+  for (const a of state.answers) {
+    if (a) score[a.pole] += a.strength;
+  }
 
   const diffs = {
     AE: score.A - score.E,
@@ -84,21 +135,22 @@ function computeResult() {
     (diffs.PI >= 0 ? 'P' : 'I') +
     (diffs.TD >= 0 ? 'T' : 'D');
 
-  const perAxis = 4; // 各軸の設問数
+  // 5 questions × strength up to 3 = max diff 15 per axis
+  const maxDiff = 15;
   const clarity = {
-    AE: Math.abs(diffs.AE) / perAxis,
-    UR: Math.abs(diffs.UR) / perAxis,
-    PI: Math.abs(diffs.PI) / perAxis,
-    TD: Math.abs(diffs.TD) / perAxis,
+    AE: Math.min(1, Math.abs(diffs.AE) / maxDiff),
+    UR: Math.min(1, Math.abs(diffs.UR) / maxDiff),
+    PI: Math.min(1, Math.abs(diffs.PI) / maxDiff),
+    TD: Math.min(1, Math.abs(diffs.TD) / maxDiff),
   };
 
   return { code, score, clarity };
 }
 
 function clarityLabel(v) {
-  if (v >= 0.75) return 'はっきり';
-  if (v >= 0.5) return 'やや';
-  if (v >= 0.25) return '僅差で';
+  if (v >= 0.6) return 'はっきり';
+  if (v >= 0.3) return 'やや';
+  if (v >= 0.1) return '僅差で';
   return 'ほぼ互角、わずかに';
 }
 

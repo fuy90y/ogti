@@ -167,54 +167,113 @@ html, body {
 
 .choices {
   display: grid;
-  gap: 14px;
+  gap: 24px;
 }
 
-.choice {
-  appearance: none;
-  text-align: left;
-  background: #fff;
-  border: 1.5px solid var(--line);
+.choice-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.choice-display {
+  background: #fbf6ee;
+  border: 1px solid var(--line);
   border-radius: 12px;
-  padding: 20px 22px;
-  font-family: inherit;
-  font-size: 16px;
-  line-height: 1.6;
-  color: var(--text);
-  cursor: pointer;
+  padding: 18px 18px;
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: flex-start;
-  transition: border-color 0.15s ease, transform 0.08s ease, background 0.15s ease;
+  font-size: 15px;
+  line-height: 1.65;
 }
-.choice.is-hover,
-.choice:focus-visible {
-  border-color: var(--accent);
-  background: #fff8f7;
-  outline: none;
-}
-.choice:active { transform: translateY(1px); }
-
-.choice-label {
+.choice-display .choice-label {
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #f3ede1;
-  color: var(--ink);
+  background: var(--ink);
+  color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 0.05em;
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
-.choice.is-hover .choice-label,
-.choice:focus-visible .choice-label {
+.choice-display.choice-b .choice-label {
   background: var(--accent);
-  color: #fff;
 }
-.choice-text { flex: 1; }
+.choice-display .choice-text { flex: 1; }
+
+.likert-caption {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  padding: 0 6px;
+}
+.likert-buttons {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.likert-btn {
+  appearance: none;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 4px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.04em;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.likert-btn .likert-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e3d8c2;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.likert-btn[data-value="-2"] .likert-dot,
+.likert-btn[data-value="2"] .likert-dot {
+  width: 15px;
+  height: 15px;
+}
+.likert-btn[data-value="-3"] .likert-dot,
+.likert-btn[data-value="3"] .likert-dot {
+  width: 18px;
+  height: 18px;
+}
+.likert-btn:active { transform: translateY(1px); }
+.likert-btn.is-hover,
+.likert-btn:focus-visible {
+  border-color: var(--accent);
+  background: #fff8f7;
+  color: var(--text);
+  outline: none;
+}
+.likert-btn.is-hover .likert-dot,
+.likert-btn:focus-visible .likert-dot {
+  background: var(--accent);
+}
+.likert-btn.selected {
+  border-color: var(--accent);
+  background: #fff1ef;
+  color: var(--ink);
+}
+.likert-btn.selected .likert-dot {
+  background: var(--accent);
+}
 
 .quiz-nav {
   display: flex;
@@ -322,9 +381,13 @@ footer.site-foot {
 @media (max-width: 520px) {
   .app { padding: 24px 14px 60px; }
   .brand-title { font-size: 34px; }
-  .question { padding: 24px 20px; }
+  .question { padding: 24px 18px; }
   .question-prompt { font-size: 17px; }
-  .choice { padding: 16px 18px; font-size: 15px; }
+  .choice-pair { grid-template-columns: 1fr; gap: 10px; }
+  .choice-display { padding: 14px 16px; font-size: 14px; }
+  .likert-buttons { gap: 4px; }
+  .likert-btn { padding: 10px 2px 8px; font-size: 10px; gap: 6px; }
+  .likert-caption { font-size: 11px; }
   .result-code { font-size: 56px; }
   .result-name { font-size: 22px; }
   .axis-labels { flex-wrap: wrap; }

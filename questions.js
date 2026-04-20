@@ -36,6 +36,14 @@ export const questions = [
       { pole: 'E', text: '無難すぎて反応が薄いほう' },
     ],
   },
+  {
+    axis: 1,
+    prompt: 'お題: 「厳しい審査員がする大喜利の講評」。書きたいのは？',
+    choices: [
+      { pole: 'A', text: '「…これを書こうと思った瞬間を、まず恥じなさい」' },
+      { pole: 'E', text: '「巧い。巧いが、昨日もどこかで聞いた気がしますね」' },
+    ],
+  },
 
   // --- 軸2: Unique(U) vs Relatable(R) ---
   {
@@ -68,6 +76,14 @@ export const questions = [
     choices: [
       { pole: 'R', text: '避ける。全員に届くほうが強い' },
       { pole: 'U', text: '入れる。刺さる人に刺さればいい' },
+    ],
+  },
+  {
+    axis: 2,
+    prompt: 'お題: 「辞書に新しく載りそうな見出し語」。書きたいのは？',
+    choices: [
+      { pole: 'R', text: '月曜倦怠感 (つきようけんたいかん)' },
+      { pole: 'U', text: '雨乞いの後悔 (あまごいのこうかい)' },
     ],
   },
 
@@ -104,6 +120,14 @@ export const questions = [
       { pole: 'I', text: '丁寧に構築された一文' },
     ],
   },
+  {
+    axis: 3,
+    prompt: 'お題: 「絶対に実用化されない、ひみつ道具」。書きたいのは？',
+    choices: [
+      { pole: 'P', text: 'だんだん薄くなる毛布' },
+      { pole: 'I', text: 'やる気スイッチを押すとやる気がなくなる装置' },
+    ],
+  },
 
   // --- 軸4: Theatrical(T) vs Descriptive(D) ---
   {
@@ -136,6 +160,14 @@ export const questions = [
     choices: [
       { pole: 'T', text: '舞台で動いて演じる身体派' },
       { pole: 'D', text: 'トークで聞かせる語り派' },
+    ],
+  },
+  {
+    axis: 4,
+    prompt: 'お題: 「街で見かけた不思議な人」。書くならどっち？',
+    choices: [
+      { pole: 'T', text: '(その人として)「あ、この道、人類初でしたっけ？」' },
+      { pole: 'D', text: '信号が青なのに、振り返って後方確認を3回する男' },
     ],
   },
 ];
