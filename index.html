@@ -111,6 +111,24 @@
 
   <div class="confetti-area" id="confetti" aria-hidden="true"></div>
 
+  <!-- Share modal -->
+  <div class="share-modal" id="share-modal" hidden>
+    <div class="share-backdrop" id="share-backdrop"></div>
+    <div class="share-card">
+      <button class="share-close" id="share-close" type="button" aria-label="閉じる">×</button>
+      <h3 class="share-title">シェア用画像</h3>
+      <div class="share-preview">
+        <img id="share-image" alt="診断結果画像" />
+        <div class="share-spinner" id="share-spinner">生成中…</div>
+      </div>
+      <div class="share-actions">
+        <button class="btn" id="share-download" type="button">画像を保存</button>
+        <button class="btn btn-primary" id="share-native" type="button">シェア</button>
+      </div>
+      <p class="share-hint">保存した画像を Twitter / LINE / Instagram 等に添付できます</p>
+    </div>
+  </div>
+
   <script type="module" src="./app.js"></script>
 </body>
 </html>

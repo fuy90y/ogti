@@ -926,6 +926,109 @@ footer.site-foot::after {
   text-shadow: 0 0 8px var(--gold);
 }
 
+/* ---------- Share Modal ---------- */
+
+.share-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.share-modal[hidden] { display: none; }
+.share-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 1, 15, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.share-card {
+  position: relative;
+  background: var(--panel);
+  border: 2.5px solid var(--frame);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px 26px;
+  max-width: 560px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow:
+    0 0 40px var(--accent),
+    0 0 80px rgba(255, 46, 107, 0.35);
+  animation: slideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.share-title {
+  font-family: var(--chunky);
+  font-size: 16px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-align: center;
+  margin: 0 0 20px;
+  text-shadow: 0 0 10px var(--gold);
+}
+.share-close {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--text);
+  border: 2px solid var(--frame);
+  font-family: var(--chunky);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 0 10px var(--accent-soft);
+  z-index: 2;
+}
+.share-close:hover { background: var(--panel-alt); box-shadow: 0 0 14px var(--accent); }
+.share-preview {
+  position: relative;
+  margin: 0 0 20px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 24px rgba(255, 230, 58, 0.25);
+  min-height: 200px;
+  background: var(--ink);
+  aspect-ratio: 1 / 1;
+}
+.share-preview img {
+  width: 100%;
+  display: block;
+}
+.share-preview img:not([src]) { display: none; }
+.share-spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--chunky);
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+.share-preview.ready .share-spinner { display: none; }
+.share-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.share-actions .btn { padding: 12px 22px; font-size: 14px; }
+.share-actions .btn-primary { padding: 14px 28px; font-size: 15px; }
+.share-hint {
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+  margin: 18px 0 0;
+  line-height: 1.6;
+}
+
 /* ---------- Confetti ---------- */
 
 .confetti-area {

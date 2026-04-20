@@ -285,21 +285,262 @@ function restart() {
 document.getElementById('btn-start').addEventListener('click', start);
 document.getElementById('btn-back').addEventListener('click', back);
 document.getElementById('btn-restart').addEventListener('click', restart);
-document.getElementById('btn-share').addEventListener('click', async () => {
+// ========== Share image generation ==========
+
+const GROUP_COLORS = {
+  AU: { main: '#ff2e8c', deep: '#c01860' },
+  AR: { main: '#ff7a1a', deep: '#c95200' },
+  EU: { main: '#a44dff', deep: '#6a1fb8' },
+  ER: { main: '#00c8ff', deep: '#008fb8' },
+};
+
+function roundRectPath(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function drawNeonText(ctx, text, x, y, color, offsetColor, offsetDist = 6) {
+  ctx.save();
+  // Offset depth (gold + ink)
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#05010f';
+  ctx.fillText(text, x + offsetDist * 2, y + offsetDist * 2);
+  ctx.fillStyle = offsetColor;
+  ctx.fillText(text, x + offsetDist, y + offsetDist);
+  // Glow passes
+  ctx.shadowColor = color;
+  ctx.fillStyle = color;
+  ctx.shadowBlur = 40; ctx.fillText(text, x, y);
+  ctx.shadowBlur = 20; ctx.fillText(text, x, y);
+  ctx.shadowBlur = 8;  ctx.fillText(text, x, y);
+  ctx.restore();
+}
+
+function wrapJPText(ctx, text, x, y, maxWidth, lineHeight) {
+  const lines = [];
+  let line = '';
+  for (const ch of text) {
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxWidth && line.length > 0) {
+      lines.push(line);
+      line = ch;
+    } else {
+      line = test;
+    }
+  }
+  if (line) lines.push(line);
+  const startY = y - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((l, i) => ctx.fillText(l, x, startY + i * lineHeight));
+  return lines.length;
+}
+
+async function generateShareCanvas() {
   const { code } = computeResult();
   const t = types[code];
-  const text = `私のOGTIは【${code}】${t.name}\n${t.tagline}\n#OGTI診断`;
-  try {
-    if (navigator.share) {
-      await navigator.share({ text });
-    } else {
-      await navigator.clipboard.writeText(text);
-      const btn = document.getElementById('btn-share');
-      const orig = btn.textContent;
-      btn.textContent = 'コピーしました';
-      setTimeout(() => (btn.textContent = orig), 1500);
-    }
-  } catch (e) {
-    // share cancelled — ignore
+  const group = code.substring(0, 2);
+  const subGroup = code.substring(2, 4);
+  const gc = GROUP_COLORS[group];
+
+  const W = 1080, H = 1080;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Ensure fonts are ready
+  await document.fonts.ready;
+  await Promise.all([
+    document.fonts.load('240px "Rampart One"', code),
+    document.fonts.load('720px "Rampart One"', t.symbol),
+    document.fonts.load('bold 72px "Zen Maru Gothic"', t.name),
+    document.fonts.load('28px "Zen Maru Gothic"', t.tagline),
+    document.fonts.load('24px "RocknRoll One"', 'サンプル'),
+  ]).catch(() => {});
+
+  // ---- Background ----
+  ctx.fillStyle = '#0a0618';
+  ctx.fillRect(0, 0, W, H);
+
+  const g1 = ctx.createRadialGradient(W * 0.18, H * 0.08, 0, W * 0.18, H * 0.08, W * 0.8);
+  g1.addColorStop(0, 'rgba(255, 46, 107, 0.28)');
+  g1.addColorStop(0.55, 'rgba(10, 6, 24, 0)');
+  ctx.fillStyle = g1;
+  ctx.fillRect(0, 0, W, H);
+
+  const g2 = ctx.createRadialGradient(W * 0.85, H * 0.95, 0, W * 0.85, H * 0.95, W * 0.8);
+  g2.addColorStop(0, 'rgba(0, 234, 255, 0.22)');
+  g2.addColorStop(0.55, 'rgba(10, 6, 24, 0)');
+  ctx.fillStyle = g2;
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid pattern
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(255, 46, 107, 0.05)';
+  for (let x = 0; x <= W; x += 54) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
   }
+  ctx.strokeStyle = 'rgba(0, 234, 255, 0.05)';
+  for (let y = 0; y <= H; y += 54) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // ---- Watermark symbol ----
+  ctx.save();
+  ctx.globalAlpha = 0.14;
+  ctx.font = '720px "Rampart One"';
+  ctx.fillStyle = gc.main;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = gc.main;
+  ctx.shadowBlur = 50;
+  ctx.fillText(t.symbol, W / 2, H / 2 + 30);
+  ctx.restore();
+
+  // ---- Card border ----
+  ctx.save();
+  ctx.strokeStyle = gc.main;
+  ctx.lineWidth = 6;
+  ctx.shadowColor = gc.main;
+  ctx.shadowBlur = 30;
+  roundRectPath(ctx, 36, 36, W - 72, H - 72, 36);
+  ctx.stroke();
+  ctx.restore();
+
+  // ---- Brand mark ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.font = '64px "Rampart One"';
+  drawNeonText(ctx, 'OGTI.', W / 2, 96, '#ff2e6b', '#ffe63a', 4);
+  ctx.font = '15px "RocknRoll One"';
+  ctx.fillStyle = '#00eaff';
+  ctx.shadowColor = '#00eaff';
+  ctx.shadowBlur = 10;
+  ctx.fillText('OOGIRI TYPE INDICATOR', W / 2, 190);
+  ctx.restore();
+
+  // ---- Big code ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = '240px "Rampart One"';
+  drawNeonText(ctx, code, W / 2, 440, gc.main, '#ffe63a', 6);
+  ctx.restore();
+
+  // ---- Type name ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = 'bold 72px "Zen Maru Gothic"';
+  ctx.fillStyle = '#ffe63a';
+  ctx.shadowColor = '#ffe63a';
+  ctx.shadowBlur = 22;
+  ctx.fillText(t.name, W / 2, 620);
+  ctx.restore();
+
+  // ---- Tagline (wrapped) ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = '26px "Zen Maru Gothic"';
+  ctx.fillStyle = '#b8a9e0';
+  wrapJPText(ctx, t.tagline, W / 2, 720, W - 180, 44);
+  ctx.restore();
+
+  // ---- Group tags ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  const g1n = GROUP_NAMES[group];
+  const s1n = SUB_GROUP_NAMES[subGroup];
+
+  ctx.font = '22px "RocknRoll One"';
+  ctx.fillStyle = gc.main;
+  ctx.shadowColor = gc.main;
+  ctx.shadowBlur = 14;
+  ctx.fillText(`${code[0]} × ${code[1]}  ${g1n.ja} / ${g1n.en}`, W / 2, 850);
+
+  ctx.font = '20px "RocknRoll One"';
+  ctx.fillStyle = 'rgba(250, 248, 255, 0.75)';
+  ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+  ctx.shadowBlur = 6;
+  ctx.fillText(`${code[2]} × ${code[3]}  ${s1n.ja} / ${s1n.en}`, W / 2, 894);
+  ctx.restore();
+
+  // ---- Footer ----
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = '18px "RocknRoll One"';
+  ctx.fillStyle = 'rgba(147, 136, 184, 0.8)';
+  ctx.fillText('#OGTI診断', W / 2, 990);
+  ctx.restore();
+
+  return canvas;
+}
+
+let shareBlob = null;
+
+async function openShareModal() {
+  const modal = document.getElementById('share-modal');
+  const img = document.getElementById('share-image');
+  const preview = document.querySelector('.share-preview');
+  preview.classList.remove('ready');
+  img.removeAttribute('src');
+  modal.hidden = false;
+
+  try {
+    const canvas = await generateShareCanvas();
+    img.src = canvas.toDataURL('image/png');
+    preview.classList.add('ready');
+    canvas.toBlob((blob) => { shareBlob = blob; }, 'image/png');
+  } catch (e) {
+    console.error('share image generation failed', e);
+  }
+}
+
+function closeShareModal() {
+  document.getElementById('share-modal').hidden = true;
+}
+
+function downloadShare() {
+  if (!shareBlob) return;
+  const { code } = computeResult();
+  const url = URL.createObjectURL(shareBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `OGTI_${code}.png`;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+async function systemShareImage() {
+  if (!shareBlob) return;
+  const { code } = computeResult();
+  const t = types[code];
+  const file = new File([shareBlob], `OGTI_${code}.png`, { type: 'image/png' });
+  const data = {
+    title: `OGTI 診断結果 — ${t.name}`,
+    text: `私のOGTIは【${code}】${t.name}\n${t.tagline}\n#OGTI診断`,
+    files: [file],
+  };
+  if (navigator.canShare && navigator.canShare(data)) {
+    try { await navigator.share(data); } catch (e) { /* cancelled */ }
+  } else {
+    downloadShare();
+  }
+}
+
+document.getElementById('btn-share').addEventListener('click', openShareModal);
+document.getElementById('share-close').addEventListener('click', closeShareModal);
+document.getElementById('share-backdrop').addEventListener('click', closeShareModal);
+document.getElementById('share-download').addEventListener('click', downloadShare);
+document.getElementById('share-native').addEventListener('click', systemShareImage);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && !document.getElementById('share-modal').hidden) closeShareModal();
 });
