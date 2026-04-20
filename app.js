@@ -219,9 +219,32 @@ function renderResult() {
   }
 }
 
+function launchConfetti() {
+  const area = document.getElementById('confetti');
+  if (!area) return;
+  area.innerHTML = '';
+  const colors = ['#d81b28', '#e0a933', '#ff4d7a', '#1a0e0e', '#9c7419', '#ffffff'];
+  const count = 80;
+  for (let i = 0; i < count; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + '%';
+    piece.style.top = '-5%';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = (6 + Math.random() * 8) + 'px';
+    piece.style.height = (10 + Math.random() * 10) + 'px';
+    piece.style.animationDelay = (Math.random() * 0.5) + 's';
+    piece.style.animationDuration = (2.2 + Math.random() * 1.4) + 's';
+    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+    area.appendChild(piece);
+  }
+  setTimeout(() => { area.innerHTML = ''; }, 4500);
+}
+
 function finish() {
   renderResult();
   show('result');
+  launchConfetti();
 }
 
 function restart() {
