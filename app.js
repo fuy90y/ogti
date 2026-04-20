@@ -228,7 +228,7 @@ function launchConfetti() {
   const area = document.getElementById('confetti');
   if (!area) return;
   area.innerHTML = '';
-  const colors = ['#d81b28', '#e0a933', '#ff4d7a', '#1a0e0e', '#9c7419', '#ffffff'];
+  const colors = ['#ff2e6b', '#00eaff', '#ffe63a', '#ff66b3', '#ff1a6b', '#ffffff'];
   const count = 80;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement('div');
