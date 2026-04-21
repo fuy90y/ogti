@@ -1217,8 +1217,11 @@ body::after {
   justify-content: center;
   font-family: var(--display);
   font-size: 38px;
+  line-height: 1;
   transform: rotate(-10deg);
   letter-spacing: 0;
+  text-indent: 0.05em;  /* Rampart One の字形が左下寄りなので右上に補正 */
+  padding-bottom: 0.12em;
   box-shadow:
     0 0 18px var(--group-color),
     inset 0 0 12px color-mix(in srgb, var(--group-color) 30%, transparent);
