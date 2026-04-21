@@ -1005,19 +1005,42 @@ function closeShareModal() {
   document.getElementById('share-modal').hidden = true;
 }
 
-function downloadShare() {
+async function downloadShare() {
   if (!shareBlob) return;
   const { code } = computeResult();
+  const suffix = currentShareFormat === 'portrait' ? '_9x16' : '_1x1';
+  const filename = `${config.brand.name}_${code}${suffix}.png`;
+  const btn = document.getElementById('share-download');
+
+  // iOS のみ: ネイティブ共有シート (Photos に保存 等を選択可) を優先。
+  // それ以外は素直に <a download> にフォールバック。
+  // 注: iPadOS 13+ は userAgent が Mac を名乗るので maxTouchPoints も見る。
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) || (ua.includes('Mac') && navigator.maxTouchPoints > 1);
+  const file = new File([shareBlob], filename, { type: 'image/png' });
+  if (isIOS && navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({
+        files: [file],
+        title: `${config.brand.name} — ${code}`,
+      });
+      return;  // ユーザーが共有シートで何か選んだ (または保存した)
+    } catch (err) {
+      // キャンセルは何もしない
+      if (err && err.name === 'AbortError') return;
+      // それ以外はフォールバックへ
+    }
+  }
+
+  // フォールバック: 従来の <a download> クリック (PC/非対応ブラウザ)
   const url = URL.createObjectURL(shareBlob);
   const a = document.createElement('a');
   a.href = url;
-  const suffix = currentShareFormat === 'portrait' ? '_9x16' : '_1x1';
-  a.download = `${config.brand.name}_${code}${suffix}.png`;
+  a.download = filename;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-  // 視覚フィードバック (iOS は Photos に黙って保存されるため重要)
-  const btn = document.getElementById('share-download');
+  // 視覚フィードバック (黙って保存される環境向け)
   if (btn && !btn.dataset.feedback) {
     btn.dataset.feedback = '1';
     const orig = btn.textContent;

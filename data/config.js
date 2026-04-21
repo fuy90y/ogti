@@ -27,7 +27,7 @@ export const config = {
     accent: '.',                       // タイトル末尾の装飾 (空文字OK)
     subtitle: 'OOGIRI TYPE INDICATOR', // サブタイトル
     fullName: '大喜利タイプ診断',      // フッター等で使う長い名前
-    hashtag: '#OGTI診断',              // シェア用ハッシュタグ
+    hashtag: '#OGTI大喜利タイプ診断',              // シェア用ハッシュタグ
   },
 
   // ---- ページメタ (title / description) ----
