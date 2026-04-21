@@ -612,12 +612,25 @@ body::after {
   transform: translate(1px, 1px);
   box-shadow: 0 0 6px var(--gold);
 }
+/* 選択時の色は極 (A=赤/B=青)、濃度は強度 (強3ほど濃く) */
+.likert-btn { --selection-color: var(--accent); --selection-alpha: 100%; }
+.likert-btn.likert-a { --selection-color: var(--pole-left); }
+.likert-btn.likert-b { --selection-color: var(--pole-right); }
+.likert-btn[data-value="-0.9"],
+.likert-btn[data-value="0.9"]  { --selection-alpha: 55%; }
+.likert-btn[data-value="-1.9"],
+.likert-btn[data-value="1.9"]  { --selection-alpha: 78%; }
+.likert-btn[data-value="-2.9"],
+.likert-btn[data-value="2.9"]  { --selection-alpha: 100%; }
+
 .likert-btn.selected {
-  background: var(--accent);
+  background: color-mix(in srgb, var(--selection-color) var(--selection-alpha), var(--panel));
   color: #fff;
   border-color: var(--gold);
   text-shadow: 0 0 6px #fff;
-  box-shadow: 0 0 18px var(--accent), 0 0 36px rgba(255, 46, 107, 0.5);
+  box-shadow:
+    0 0 18px var(--selection-color),
+    0 0 36px color-mix(in srgb, var(--selection-color) 45%, transparent);
 }
 .likert-btn.selected .likert-dot {
   background: var(--gold);
@@ -943,6 +956,70 @@ footer.site-foot::after {
   content: ' ✦ ';
   color: var(--gold);
   text-shadow: 0 0 8px var(--gold);
+}
+
+/* ---------- Start Drumroll ---------- */
+
+.start-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 1, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 150;
+}
+.start-overlay.active {
+  display: flex;
+  animation: startOverlayFade 1.85s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes startOverlayFade {
+  0% { opacity: 0; }
+  14% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.start-text {
+  font-family: var(--display);
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+.start-line {
+  display: block;
+  opacity: 0;
+}
+.start-line-1 { font-size: clamp(30px, 7.5vw, 72px); }
+.start-line-2 { font-size: clamp(68px, 16vw, 160px); }
+.start-overlay.active .start-line-1 {
+  color: var(--accent);
+  text-shadow:
+    0 0 12px var(--accent),
+    0 0 32px var(--accent),
+    0 0 64px var(--accent-deep),
+    4px 4px 0 var(--gold),
+    8px 8px 0 var(--ink);
+  animation: startLineFlash 1.2s cubic-bezier(0.22, 1.4, 0.36, 1) 0.15s forwards;
+}
+.start-overlay.active .start-line-2 {
+  color: var(--gold);
+  margin-top: 0.1em;
+  text-shadow:
+    0 0 12px var(--gold),
+    0 0 32px var(--gold),
+    0 0 64px var(--gold-deep),
+    4px 4px 0 var(--accent),
+    8px 8px 0 var(--ink);
+  animation: startLineFlash 1.15s cubic-bezier(0.22, 1.4, 0.36, 1) 0.4s forwards;
+}
+@keyframes startLineFlash {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.55); }
+  25%  { opacity: 1; transform: translateY(0) scale(1.06); }
+  40%  { transform: translateY(0) scale(1); }
+  75%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.25); }
 }
 
 /* ---------- Share Modal ---------- */

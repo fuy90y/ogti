@@ -298,7 +298,19 @@ function restart() {
   show('landing');
 }
 
-document.getElementById('btn-start').addEventListener('click', start);
+function startWithDrama() {
+  const overlay = document.getElementById('start-overlay');
+  // アニメーションをリセットするためクラスを外して reflow してから付け直す
+  overlay.classList.remove('active');
+  void overlay.offsetWidth;
+  overlay.classList.add('active');
+  // テキスト2行が完全にフェードアウト (〜1.55s) した後にクイズを裏で描画、
+  // 続いてオーバーレイが透過してクイズが現れる
+  setTimeout(() => { start(); }, 1600);
+  setTimeout(() => { overlay.classList.remove('active'); }, 1850);
+}
+
+document.getElementById('btn-start').addEventListener('click', startWithDrama);
 document.getElementById('btn-back').addEventListener('click', back);
 document.getElementById('btn-restart').addEventListener('click', restart);
 // ========== Share image generation ==========
