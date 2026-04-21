@@ -675,9 +675,9 @@ body::after {
     0 0 28px color-mix(in srgb, var(--gold) 55%, transparent);
 }
 .axes-intro .vs strong {
-  font-family: var(--display);
+  font-family: var(--chunky);
   font-weight: 400;
-  font-size: clamp(11px, 2vw, 15px);
+  font-size: clamp(12px, 2vw, 15px);
   letter-spacing: clamp(0.08em, 0.2vw, 0.14em);
   line-height: 1;
   display: inline-block;
@@ -685,14 +685,12 @@ body::after {
 .axes-intro .vs small {
   font-family: var(--chunky);
   font-weight: 400;
-  font-size: clamp(10px, 1.6vw, 12px);
-  color: #fff;
+  font-size: clamp(13px, 2.1vw, 15px);
+  color: var(--gold);
   letter-spacing: clamp(0.04em, 0.16vw, 0.12em);
   margin: 0;
   line-height: 1;
   display: inline-block;
-  padding-top: 1px;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
 }
 .axes-intro .vs::before,
 .axes-intro .vs::after { display: none; }
@@ -1327,15 +1325,15 @@ body::after {
   align-items: center;
   gap: clamp(5px, 1vw, 8px);
   font-family: var(--chunky);
-  font-size: clamp(10px, 1.6vw, 12px);
+  font-size: clamp(13px, 2.1vw, 15px);
   letter-spacing: clamp(0.08em, 0.22vw, 0.16em);
   color: var(--gold);
   opacity: 0.9;
   white-space: nowrap;
 }
 .axis-title strong {
-  font-family: var(--display);
-  font-size: clamp(11px, 2vw, 15px);
+  font-family: var(--chunky);
+  font-size: clamp(12px, 2vw, 15px);
   letter-spacing: clamp(0.06em, 0.15vw, 0.1em);
   color: var(--gold);
   text-shadow: 0 0 10px var(--gold), 0 0 22px color-mix(in srgb, var(--gold) 35%, transparent);
