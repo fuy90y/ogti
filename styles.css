@@ -760,7 +760,6 @@ body::after {
   margin-top: 36px;
   flex-wrap: wrap;
 }
-.btn-row[hidden] { display: none; }
 
 /* ---------- Quiz ---------- */
 
@@ -1872,14 +1871,14 @@ footer.site-foot::after {
 }
 
 @media (max-width: 460px) {
-  .axes-intro li > span[data-pole] {
+  .axes-intro li > span[data-side] {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
     gap: 2px;
     justify-items: center;
   }
-  .axes-intro li > span[data-pole] .pole-name { justify-self: center; }
-  .axes-intro li > span[data-pole] small {
+  .axes-intro li > span[data-side] .pole-name { justify-self: center; }
+  .axes-intro li > span[data-side] small {
     justify-self: center;
     align-self: center;
     padding-bottom: 0;
