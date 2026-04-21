@@ -201,10 +201,32 @@ body::after {
 }
 .lead p:last-child { margin-bottom: 0; }
 
+.axes-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 26px 0 14px;
+  font-family: var(--chunky);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--gold);
+  text-shadow: 0 0 8px var(--gold), 0 0 18px rgba(255, 230, 58, 0.3);
+}
+.axes-heading::before,
+.axes-heading::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  max-width: 72px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  box-shadow: 0 0 6px var(--gold);
+}
+
 .axes-intro {
   list-style: none;
   padding: 0;
-  margin: 24px 0 0;
+  margin: 0;
   display: grid;
   gap: 20px;
 }
