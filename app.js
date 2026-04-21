@@ -320,6 +320,13 @@ function roundRectPath(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 function drawNeonText(ctx, text, x, y, color, offsetColor, offsetDist = 6) {
   ctx.save();
   // Offset depth (gold + ink)
@@ -414,7 +421,7 @@ async function generateShareCanvas() {
   ctx.textBaseline = 'middle';
   ctx.shadowColor = gc.main;
   ctx.shadowBlur = 50;
-  ctx.fillText(t.symbol, W / 2, H / 2 + 30);
+  ctx.fillText(t.symbol, W / 2, H / 2);
   ctx.restore();
 
   // ---- Card border ----
@@ -425,6 +432,41 @@ async function generateShareCanvas() {
   ctx.shadowBlur = 30;
   roundRectPath(ctx, 36, 36, W - 72, H - 72, 36);
   ctx.stroke();
+  ctx.restore();
+
+  // ---- Type stamp (top-right kanji circle) ----
+  ctx.save();
+  const stampR = 84;
+  const stampCx = W - 160;
+  const stampCy = 168;
+  // Filled tinted circle
+  ctx.fillStyle = hexToRgba(gc.main, 0.12);
+  ctx.beginPath();
+  ctx.arc(stampCx, stampCy, stampR, 0, Math.PI * 2);
+  ctx.fill();
+  // Double ring (outer + inner) with glow
+  ctx.shadowColor = gc.main;
+  ctx.shadowBlur = 22;
+  ctx.strokeStyle = gc.main;
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.arc(stampCx, stampCy, stampR, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 10;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(stampCx, stampCy, stampR - 10, 0, Math.PI * 2);
+  ctx.stroke();
+  // Rotated kanji inside
+  ctx.translate(stampCx, stampCy);
+  ctx.rotate((-14 * Math.PI) / 180);
+  ctx.font = '92px "Rampart One"';
+  ctx.fillStyle = gc.main;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = gc.main;
+  ctx.shadowBlur = 16;
+  ctx.fillText(t.symbol, 0, 4);
   ctx.restore();
 
   // ---- Brand mark ----

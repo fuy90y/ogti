@@ -655,7 +655,7 @@ body::after {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -52%);
+  transform: translate(-50%, -59%);
   font-family: var(--display);
   font-size: clamp(340px, 54vw, 560px);
   line-height: 0.85;
@@ -1108,7 +1108,9 @@ footer.site-foot::after {
   .likert-caption { font-size: 11px; letter-spacing: 0.08em; }
   .result-card {
     padding: 40px 20px 30px;
-    box-shadow: 0 0 24px var(--accent), 0 0 48px rgba(255, 46, 107, 0.35);
+    box-shadow:
+      0 0 24px var(--group-color),
+      0 0 48px color-mix(in srgb, var(--group-color) 35%, transparent);
   }
   .type-symbol {
     width: 56px; height: 56px;
@@ -1121,7 +1123,13 @@ footer.site-foot::after {
     right: -60px;
     bottom: -80px;
   }
-  .result-code { text-shadow: 0 0 8px var(--accent), 0 0 20px var(--accent), 3px 3px 0 var(--gold), 6px 6px 0 var(--ink); }
+  .result-code {
+    text-shadow:
+      0 0 8px var(--group-color, var(--accent)),
+      0 0 20px var(--group-color, var(--accent)),
+      3px 3px 0 var(--gold),
+      6px 6px 0 var(--ink);
+  }
   .result-name { font-size: 24px; }
   .result-section { padding: 20px 22px; }
   .axis-pole.picked { font-size: 15px; }
