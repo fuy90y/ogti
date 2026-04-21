@@ -1083,6 +1083,21 @@ footer.site-foot::after {
     padding-bottom: 5px;
   }
   .axes-intro .vs small { padding-top: 0; }
+}
+
+@media (max-width: 460px) {
+  .axes-intro li > span[data-pole] {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 2px;
+    justify-items: center;
+  }
+  .axes-intro li > span[data-pole] .pole-name { justify-self: center; }
+  .axes-intro li > span[data-pole] small {
+    justify-self: center;
+    align-self: center;
+    padding-bottom: 0;
+  }
   .question { padding: 32px 20px 26px; }
   .question-prompt { font-size: 17px; }
   .choice-pair { grid-template-columns: 1fr; gap: 12px; }
