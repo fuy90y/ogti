@@ -375,15 +375,26 @@ async function generateShareCanvas() {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
-  // Ensure fonts are ready
+  // iOS Safari 対策: Canvas 描画で使う全サイズを事前ロード
+  // document.fonts.load() は指定サイズ/ファミリ組み合わせをブラウザに明示して読ませる
   await document.fonts.ready;
-  await Promise.all([
-    document.fonts.load('240px "Rampart One"', code),
-    document.fonts.load('720px "Rampart One"', t.symbol),
-    document.fonts.load('bold 72px "Zen Maru Gothic"', t.name),
-    document.fonts.load('28px "Zen Maru Gothic"', t.tagline),
-    document.fonts.load('24px "RocknRoll One"', 'サンプル'),
-  ]).catch(() => {});
+  const fontSpecs = [
+    '64px "Rampart One"',
+    '240px "Rampart One"',
+    '720px "Rampart One"',
+    '92px "Rampart One"',
+    '15px "RocknRoll One"',
+    '18px "RocknRoll One"',
+    '20px "RocknRoll One"',
+    '22px "RocknRoll One"',
+    'bold 72px "Zen Maru Gothic"',
+    '26px "Zen Maru Gothic"',
+  ];
+  await Promise.all(
+    fontSpecs.map((spec) => document.fonts.load(spec, 'あA漢').catch(() => {}))
+  );
+  // iOS の描画キャッシュが落ち着くのを待つ (double rAF)
+  await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
 
   // ---- Background ----
   ctx.fillStyle = '#0a0618';
@@ -413,13 +424,13 @@ async function generateShareCanvas() {
   }
 
   // ---- Watermark symbol ----
+  // iOS Safari で globalAlpha + shadowBlur が不安定なので rgba() で直接指定
   ctx.save();
-  ctx.globalAlpha = 0.14;
   ctx.font = '720px "Rampart One"';
-  ctx.fillStyle = gc.main;
+  ctx.fillStyle = hexToRgba(gc.main, 0.14);
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.shadowColor = gc.main;
+  ctx.shadowColor = hexToRgba(gc.main, 0.25);
   ctx.shadowBlur = 50;
   ctx.fillText(t.symbol, W / 2, H / 2);
   ctx.restore();
@@ -575,6 +586,20 @@ function downloadShare() {
   a.download = `OGTI_${code}.png`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  // 視覚フィードバック (iOS は Photos に黙って保存されるため重要)
+  const btn = document.getElementById('share-download');
+  if (btn && !btn.dataset.feedback) {
+    btn.dataset.feedback = '1';
+    const orig = btn.textContent;
+    btn.textContent = '✓ 保存しました';
+    btn.classList.add('btn-feedback');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('btn-feedback');
+      delete btn.dataset.feedback;
+    }, 1800);
+  }
 }
 
 document.getElementById('btn-share').addEventListener('click', openShareModal);

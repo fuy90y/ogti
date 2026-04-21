@@ -48,7 +48,8 @@ html, body {
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   position: relative;
-  min-height: 100vh;
+  min-height: 100vh; /* fallback for older browsers */
+  min-height: 100dvh;
 }
 body::before {
   content: '';
@@ -79,7 +80,8 @@ body::after {
   max-width: 720px;
   margin: 0 auto;
   padding: 56px 20px 80px;
-  min-height: 100vh;
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh;
   position: relative;
   z-index: 1;
 }
@@ -1035,6 +1037,14 @@ footer.site-foot::after {
 }
 .share-actions .btn { padding: 12px 22px; font-size: 14px; }
 .share-actions .btn-primary { padding: 14px 28px; font-size: 15px; }
+.share-actions .btn.btn-feedback {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+  text-shadow: none;
+  box-shadow: 0 0 20px var(--gold), 0 0 48px rgba(255, 230, 58, 0.55);
+  pointer-events: none;
+}
 .share-hint {
   font-size: 12px;
   color: var(--muted);
