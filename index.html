@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OGTI — 大喜利タイプ診断</title>
-  <meta name="description" content="Oogiri Type Indicator — 4軸16タイプで、あなたの大喜利の流儀を診断します。" />
+  <!-- title / description / 以下の空要素は app.js の hydrateLanding() が config.js から埋める -->
+  <title></title>
+  <meta name="description" content="" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Rampart+One&family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -13,50 +14,28 @@
 <body>
   <main class="app">
 
-    <!-- Landing -->
+    <!-- Landing (テキストは config.js から JS で注入) -->
     <section id="screen-landing" class="screen active">
       <header class="brand">
-        <h1 class="brand-title">OGTI<span class="accent">.</span></h1>
-        <p class="brand-sub">OOGIRI TYPE INDICATOR</p>
+        <h1 class="brand-title"></h1>
+        <p class="brand-sub"></p>
       </header>
 
       <div class="lead">
-        <p>OGTI は、あなたの<strong>大喜利の流儀</strong>を4軸16タイプで診断します。</p>
-        <p>全20問。お題と回答を読み、どちら寄りかを 6段階で選んでください。</p>
-        <div class="axes-heading"><span>大喜利の流儀 4つの軸</span></div>
-        <ul class="axes-intro">
-          <li>
-            <span data-pole="A"><span class="pole-name"><span class="init">A</span>ggressive</span><small>挑戦</small></span>
-            <span class="vs"><strong>NERVE</strong><small>度胸</small></span>
-            <span data-pole="E"><span class="pole-name"><span class="init">E</span>legant</span><small>洗練</small></span>
-          </li>
-          <li>
-            <span data-pole="U"><span class="pole-name"><span class="init">U</span>nique</span><small>独自</small></span>
-            <span class="vs"><strong>LENS</strong><small>視座</small></span>
-            <span data-pole="R"><span class="pole-name"><span class="init">R</span>elatable</span><small>共感</small></span>
-          </li>
-          <li>
-            <span data-pole="P"><span class="pole-name"><span class="init">P</span>layful</span><small>剽軽</small></span>
-            <span class="vs"><strong>PULSE</strong><small>拍子</small></span>
-            <span data-pole="I"><span class="pole-name"><span class="init">I</span>ntelligent</span><small>知性</small></span>
-          </li>
-          <li>
-            <span data-pole="T"><span class="pole-name"><span class="init">T</span>heatrical</span><small>演技</small></span>
-            <span class="vs"><strong>VOICE</strong><small>語り口</small></span>
-            <span data-pole="D"><span class="pole-name"><span class="init">D</span>escriptive</span><small>解説</small></span>
-          </li>
-        </ul>
+        <!-- <p> 段落と <ul class="axes-intro"> の <li> 群は JS が生成 -->
+        <div class="axes-heading"><span></span></div>
+        <ul class="axes-intro"></ul>
       </div>
 
       <div class="btn-row">
-        <button id="btn-start" class="btn btn-primary" type="button">診断を始める</button>
+        <button id="btn-start" class="btn btn-primary" type="button"></button>
       </div>
     </section>
 
     <!-- Quiz -->
     <section id="screen-quiz" class="screen">
       <div class="progress">
-        <span id="progress-text">Q1 / 20</span>
+        <span id="progress-text"></span>
         <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
       </div>
 
@@ -95,18 +74,18 @@
     </section>
 
     <footer class="site-foot">
-      OGTI — 大喜利タイプ診断
+      <span class="site-foot-brand"></span>
       <span class="site-foot-links"><a href="./terms.html">利用規約</a></span>
     </footer>
   </main>
 
   <div class="confetti-area" id="confetti" aria-hidden="true"></div>
 
-  <!-- Start drumroll overlay -->
+  <!-- Start drumroll overlay (テキストは config.drumroll から JS で注入) -->
   <div class="start-overlay" id="start-overlay" aria-hidden="true">
     <div class="start-text">
-      <div class="start-line start-line-1">続いてのお題は、</div>
-      <div class="start-line start-line-2">こちら！</div>
+      <div class="start-line start-line-1"></div>
+      <div class="start-line start-line-2"></div>
     </div>
   </div>
 

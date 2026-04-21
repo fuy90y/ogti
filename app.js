@@ -1,9 +1,11 @@
-import { questions } from './questions.js';
-import { types } from './types.js';
-import { sections } from './sections.js';
+import { config } from './data/config.js';
+import { questions } from './data/questions.js';
+import { types } from './data/types.js';
+
+const sections = config.sections;
 
 const state = {
-  answers: [], // { pole: 'A', strength: 1..3 } or undefined
+  answers: [], // { pole: 'A', strength: 0.9..2.9 } or undefined
   index: 0,
   shuffled: [], // ランダム化された設問 (セッション開始時に確定)
 };
@@ -27,15 +29,128 @@ const screens = {
   result: document.getElementById('screen-result'),
 };
 
-// 0.9/1.9/2.9 で合計0を数学的に排除 (最小|差|=0.1、タイブレーク不要)
+// 値はすべて奇数 (3/5/7)。奇数個 (5問) の奇数の和は必ず奇数になるため、
+// 軸ごとの差分が 0 になることは数学的に排除される (タイブレーク不要)。
 const LIKERT_BUTTONS = [
-  { value: -2.9, label: 'A強',  side: 'a' },
-  { value: -1.9, label: 'A',    side: 'a' },
-  { value: -0.9, label: 'ややA', side: 'a' },
-  { value:  0.9, label: 'ややB', side: 'b' },
-  { value:  1.9, label: 'B',    side: 'b' },
-  { value:  2.9, label: 'B強',  side: 'b' },
+  { value: -7, label: 'A強',  side: 'a' },
+  { value: -5, label: 'A',    side: 'a' },
+  { value: -3, label: 'ややA', side: 'a' },
+  { value:  3, label: 'ややB', side: 'b' },
+  { value:  5, label: 'B',    side: 'b' },
+  { value:  7, label: 'B強',  side: 'b' },
 ];
+
+// ---- テーマ (グループ色) ----
+// ネオンテーマ固定。別テーマ導入時はここを差し替え予定。
+// キーは タイプコード先頭2文字 = 第1軸+第2軸のポール組合せ
+const GROUP_COLORS = {
+  [config.axes[0].left.pole  + config.axes[1].left.pole]:  { main: '#ff2e8c', deep: '#c01860' },
+  [config.axes[0].left.pole  + config.axes[1].right.pole]: { main: '#ff7a1a', deep: '#c95200' },
+  [config.axes[0].right.pole + config.axes[1].left.pole]:  { main: '#a44dff', deep: '#6a1fb8' },
+  [config.axes[0].right.pole + config.axes[1].right.pole]: { main: '#00c8ff', deep: '#008fb8' },
+};
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ========== Hydration (config → HTML) ==========
+// ページ読み込み時に config.js の値で landing / terms を動的に書き換える。
+// index.html の OGTI 固有文字列は "デフォルト表示" であり、JSが上書きする。
+
+function hydrateLanding() {
+  // このページが landing (index.html) かチェック
+  if (!document.getElementById('screen-landing')) return;
+
+  document.title = config.meta.title;
+  const md = document.querySelector('meta[name="description"]');
+  if (md) md.setAttribute('content', config.meta.description);
+
+  const brandTitle = document.querySelector('.brand-title');
+  if (brandTitle) {
+    brandTitle.textContent = config.brand.name;
+    if (config.brand.accent) {
+      const accent = document.createElement('span');
+      accent.className = 'accent';
+      accent.textContent = config.brand.accent;
+      brandTitle.appendChild(accent);
+    }
+  }
+  const brandSub = document.querySelector('.brand-sub');
+  if (brandSub) brandSub.textContent = config.brand.subtitle;
+
+  // Lead paragraphs
+  const lead = document.querySelector('.lead');
+  if (lead) {
+    lead.querySelectorAll(':scope > p').forEach((p) => p.remove());
+    const anchor = lead.querySelector('.axes-heading') || lead.querySelector('.axes-intro');
+    config.landing.lead.forEach((html) => {
+      const p = document.createElement('p');
+      p.innerHTML = html;
+      if (anchor) lead.insertBefore(p, anchor);
+      else lead.appendChild(p);
+    });
+  }
+
+  const axesHeading = document.querySelector('.axes-heading span');
+  if (axesHeading) axesHeading.textContent = config.landing.axesHeading;
+
+  const btnStart = document.getElementById('btn-start');
+  if (btnStart) btnStart.textContent = config.landing.startButton;
+
+  // Drumroll
+  const line1 = document.querySelector('.start-line-1');
+  const line2 = document.querySelector('.start-line-2');
+  if (line1) line1.textContent = config.drumroll.line1;
+  if (line2) line2.textContent = config.drumroll.line2;
+
+  // 軸紹介リスト
+  const ul = document.querySelector('.axes-intro');
+  if (ul) {
+    ul.innerHTML = '';
+    for (const axis of config.axes) {
+      const li = document.createElement('li');
+      li.appendChild(buildPoleChip(axis.left, 'left'));
+      li.appendChild(buildArrowBadge(axis.title));
+      li.appendChild(buildPoleChip(axis.right, 'right'));
+      ul.appendChild(li);
+    }
+  }
+
+  // フッターブランド表記
+  const footBrand = document.querySelector('.site-foot-brand');
+  if (footBrand) footBrand.textContent = `${config.brand.name} — ${config.brand.fullName}`;
+}
+
+function buildPoleChip(pole, side) {
+  const span = document.createElement('span');
+  span.setAttribute('data-side', side);
+  span.innerHTML =
+    `<span class="pole-name">` +
+      `<span class="init">${escapeHtml(pole.label.charAt(0))}</span>` +
+      `${escapeHtml(pole.label.slice(1))}` +
+    `</span>` +
+    `<small>${escapeHtml(pole.ja)}</small>`;
+  return span;
+}
+
+function buildArrowBadge(title) {
+  const span = document.createElement('span');
+  span.className = 'vs';
+  const strong = document.createElement('strong');
+  strong.textContent = title.en;
+  const small = document.createElement('small');
+  small.textContent = title.ja;
+  span.append(strong, small);
+  return span;
+}
+
+hydrateLanding();
+
+// ========== Core flow ==========
 
 function show(name) {
   for (const key of Object.keys(screens)) {
@@ -149,33 +264,24 @@ function back() {
 }
 
 function computeResult() {
-  const score = { A: 0, E: 0, U: 0, R: 0, P: 0, I: 0, T: 0, D: 0 };
+  const score = {};
+  for (const axis of config.axes) {
+    score[axis.left.pole] = 0;
+    score[axis.right.pole] = 0;
+  }
   for (const a of state.answers) {
-    if (a) score[a.pole] += a.strength;
+    if (a && score.hasOwnProperty(a.pole)) score[a.pole] += a.strength;
   }
 
-  const diffs = {
-    AE: score.A - score.E,
-    UR: score.U - score.R,
-    PI: score.P - score.I,
-    TD: score.T - score.D,
-  };
-
-  const code =
-    (diffs.AE >= 0 ? 'A' : 'E') +
-    (diffs.UR >= 0 ? 'U' : 'R') +
-    (diffs.PI >= 0 ? 'P' : 'I') +
-    (diffs.TD >= 0 ? 'T' : 'D');
-
-  // 5 questions × strength up to 2.9 = max diff 14.5 per axis
-  const maxDiff = 14.5;
-  const clarity = {
-    AE: Math.min(1, Math.abs(diffs.AE) / maxDiff),
-    UR: Math.min(1, Math.abs(diffs.UR) / maxDiff),
-    PI: Math.min(1, Math.abs(diffs.PI) / maxDiff),
-    TD: Math.min(1, Math.abs(diffs.TD) / maxDiff),
-  };
-
+  let code = '';
+  const clarity = {};
+  // 5問 × strength up to 7 = 軸ごとの最大差 35
+  const maxDiff = 35;
+  for (const axis of config.axes) {
+    const diff = score[axis.left.pole] - score[axis.right.pole];
+    code += diff >= 0 ? axis.left.pole : axis.right.pole;
+    clarity[axis.key] = Math.min(1, Math.abs(diff) / maxDiff);
+  }
   return { code, score, clarity };
 }
 
@@ -183,55 +289,48 @@ function emphasizeInitial(word) {
   return `<span class="pole-name"><span class="init">${word[0]}</span>${word.slice(1)}</span>`;
 }
 
-function clarityLabel(v) {
-  if (v >= 0.85) return '極めて強く';
-  if (v >= 0.65) return '強く';
-  if (v >= 0.45) return '明確に';
-  if (v >= 0.25) return 'やや';
-  if (v >= 0.08) return 'わずかに';
-  return null; // ほぼ互角
-}
-
-const GROUP_NAMES = {
-  AU: { ja: '狂騒派', en: 'WILD' },
-  AR: { ja: '熱血派', en: 'FERVENT' },
-  EU: { ja: '幽玄派', en: 'MYSTIC' },
-  ER: { ja: '正統派', en: 'CLASSIC' },
-};
-
-const SUB_GROUP_NAMES = {
-  PT: { ja: '踊り手', en: 'DANCER' },
-  PD: { ja: '射撃手', en: 'SHOOTER' },
-  IT: { ja: '演者',   en: 'ACTOR' },
-  ID: { ja: '観察者', en: 'OBSERVER' },
-};
-
 function renderResult() {
-  const { code, score, clarity } = computeResult();
+  const { code, clarity } = computeResult();
   const t = types[code];
   const group = code.substring(0, 2);
 
   const card = document.getElementById('result-card');
-  card.dataset.group = group;
+  // グループ色 (ネオンピンク/オレンジ/紫/シアン) をインラインで注入。
+  // ポール文字に依存せず、GROUP_COLORS の position-based キーで解決する。
+  const gc = GROUP_COLORS[group];
+  if (gc) {
+    card.style.setProperty('--group-color', gc.main);
+    card.style.setProperty('--group-color-deep', gc.deep);
+  }
   document.getElementById('type-watermark').textContent = t.symbol;
   document.getElementById('type-symbol').textContent = t.symbol;
   document.getElementById('result-code').textContent = code;
   document.getElementById('result-name').textContent = t.name;
   document.getElementById('result-tagline').textContent = t.tagline;
-  const subGroup = code.substring(2, 4);
-  const g = GROUP_NAMES[group];
-  const sg = SUB_GROUP_NAMES[subGroup];
-  document.getElementById('result-group').innerHTML = `
-    <span class="group-line primary">
-      <span class="group-deriv">${code[0]}<span class="op">×</span>${code[1]}</span>
-      <span class="group-name">${g.ja} / ${g.en}</span>
-    </span>
-    <span class="group-line secondary">
-      <span class="group-deriv">${code[2]}<span class="op">×</span>${code[3]}</span>
-      <span class="group-name">${sg.ja} / ${sg.en}</span>
-    </span>
-  `;
-  // セクション (見出し+本文) を sections.js の定義順に生成
+
+  // グループ表示 (config.groups.enabled で可変)
+  const groupEl = document.getElementById('result-group');
+  if (config.groups.enabled) {
+    const subGroup = code.substring(2, 4);
+    const g = config.groups.primary[group];
+    const sg = config.groups.sub[subGroup];
+    groupEl.hidden = false;
+    groupEl.innerHTML = `
+      <span class="group-line primary">
+        <span class="group-deriv">${code[0]}<span class="op">×</span>${code[1]}</span>
+        <span class="group-name">${escapeHtml(g.ja)} / ${escapeHtml(g.en)}</span>
+      </span>
+      <span class="group-line secondary">
+        <span class="group-deriv">${code[2]}<span class="op">×</span>${code[3]}</span>
+        <span class="group-name">${escapeHtml(sg.ja)} / ${escapeHtml(sg.en)}</span>
+      </span>
+    `;
+  } else {
+    groupEl.hidden = true;
+    groupEl.innerHTML = '';
+  }
+
+  // テキストセクション
   const sectionsEl = document.getElementById('result-sections');
   sectionsEl.innerHTML = '';
   for (const s of sections) {
@@ -247,15 +346,10 @@ function renderResult() {
     sectionsEl.appendChild(el);
   }
 
+  // 軸ごとの傾向
   const axesEl = document.getElementById('result-axes');
   axesEl.innerHTML = '';
-  const axisDefs = [
-    { key: 'AE', title: { en: 'NERVE', ja: '度胸' },   left: { pole: 'A', label: 'Aggressive', ja: '挑戦' }, right: { pole: 'E', label: 'Elegant', ja: '洗練' } },
-    { key: 'UR', title: { en: 'LENS',  ja: '視座' },   left: { pole: 'U', label: 'Unique', ja: '独自' },    right: { pole: 'R', label: 'Relatable', ja: '共感' } },
-    { key: 'PI', title: { en: 'PULSE', ja: '拍子' },   left: { pole: 'P', label: 'Playful', ja: '剽軽' },   right: { pole: 'I', label: 'Intelligent', ja: '知性' } },
-    { key: 'TD', title: { en: 'VOICE', ja: '語り口' }, left: { pole: 'T', label: 'Theatrical', ja: '演技' },right: { pole: 'D', label: 'Descriptive', ja: '解説' } },
-  ];
-  for (const a of axisDefs) {
+  for (const a of config.axes) {
     const winnerIsLeft = code.includes(a.left.pole);
     const winner = winnerIsLeft ? a.left : a.right;
     const c = clarity[a.key];
@@ -263,12 +357,12 @@ function renderResult() {
 
     const row = document.createElement('div');
     row.className = 'axis-row';
-    row.dataset.winner = winner.pole;
+    row.dataset.winnerSide = winnerIsLeft ? 'left' : 'right';
     row.innerHTML = `
       <div class="axis-labels">
-        <span class="axis-pole ${winnerIsLeft ? 'picked' : ''}">${emphasizeInitial(a.left.label)}<small>${a.left.ja}</small></span>
-        <span class="axis-title"><strong>${a.title.en}</strong><span>${a.title.ja}</span></span>
-        <span class="axis-pole ${!winnerIsLeft ? 'picked' : ''}">${emphasizeInitial(a.right.label)}<small>${a.right.ja}</small></span>
+        <span class="axis-pole ${winnerIsLeft ? 'picked' : ''}">${emphasizeInitial(a.left.label)}<small>${escapeHtml(a.left.ja)}</small></span>
+        <span class="axis-title"><strong>${escapeHtml(a.title.en)}</strong><span>${escapeHtml(a.title.ja)}</span></span>
+        <span class="axis-pole ${!winnerIsLeft ? 'picked' : ''}">${emphasizeInitial(a.right.label)}<small>${escapeHtml(a.right.ja)}</small></span>
       </div>
       <div class="axis-bar">
         <div class="axis-center"></div>
@@ -313,27 +407,14 @@ function restart() {
 
 function startWithDrama() {
   const overlay = document.getElementById('start-overlay');
-  // アニメーションをリセットするためクラスを外して reflow してから付け直す
   overlay.classList.remove('active');
   void overlay.offsetWidth;
   overlay.classList.add('active');
-  // テキスト2行が完全にフェードアウト (〜1.55s) した後にクイズを裏で描画、
-  // 続いてオーバーレイが透過してクイズが現れる
   setTimeout(() => { start(); }, 1600);
   setTimeout(() => { overlay.classList.remove('active'); }, 1850);
 }
 
-document.getElementById('btn-start').addEventListener('click', startWithDrama);
-document.getElementById('btn-back').addEventListener('click', back);
-document.getElementById('btn-restart').addEventListener('click', restart);
-// ========== Share image generation ==========
-
-const GROUP_COLORS = {
-  AU: { main: '#ff2e8c', deep: '#c01860' },
-  AR: { main: '#ff7a1a', deep: '#c95200' },
-  EU: { main: '#a44dff', deep: '#6a1fb8' },
-  ER: { main: '#00c8ff', deep: '#008fb8' },
-};
+// ========== Share image ==========
 
 function roundRectPath(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -401,7 +482,7 @@ async function generateShareCanvas() {
   const ctx = canvas.getContext('2d');
 
   // iOS Safari 対策: Canvas 描画で使う全サイズを事前ロード
-  // document.fonts.load() は指定サイズ/ファミリ組み合わせをブラウザに明示して読ませる
+  // document.fonts.load() は指定サイズ/ファミリ組合せをブラウザに明示して読ませる
   await document.fonts.ready;
   const fontSpecs = [
     '64px "Rampart One"',
@@ -424,20 +505,18 @@ async function generateShareCanvas() {
   // ---- Background ----
   ctx.fillStyle = '#0a0618';
   ctx.fillRect(0, 0, W, H);
-
   const g1 = ctx.createRadialGradient(W * 0.18, H * 0.08, 0, W * 0.18, H * 0.08, W * 0.8);
   g1.addColorStop(0, 'rgba(255, 46, 107, 0.28)');
   g1.addColorStop(0.55, 'rgba(10, 6, 24, 0)');
   ctx.fillStyle = g1;
   ctx.fillRect(0, 0, W, H);
-
   const g2 = ctx.createRadialGradient(W * 0.85, H * 0.95, 0, W * 0.85, H * 0.95, W * 0.8);
   g2.addColorStop(0, 'rgba(0, 234, 255, 0.22)');
   g2.addColorStop(0.55, 'rgba(10, 6, 24, 0)');
   ctx.fillStyle = g2;
   ctx.fillRect(0, 0, W, H);
 
-  // Grid pattern
+  // ---- Grid pattern ----
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(255, 46, 107, 0.05)';
   for (let x = 0; x <= W; x += 54) {
@@ -510,12 +589,13 @@ async function generateShareCanvas() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'top';
   ctx.font = '64px "Rampart One"';
-  drawNeonText(ctx, 'OGTI.', W / 2, 96, '#ff2e6b', '#ffe63a', 4);
+  const brandDisplay = config.brand.name + (config.brand.accent || '');
+  drawNeonText(ctx, brandDisplay, W / 2, 96, '#ff2e6b', '#ffe63a', 4);
   ctx.font = '15px "RocknRoll One"';
   ctx.fillStyle = '#00eaff';
   ctx.shadowColor = '#00eaff';
   ctx.shadowBlur = 10;
-  ctx.fillText('OOGIRI TYPE INDICATOR', W / 2, 190);
+  ctx.fillText(config.brand.subtitle, W / 2, 190);
   ctx.restore();
 
   // ---- Big code ----
@@ -546,33 +626,41 @@ async function generateShareCanvas() {
   wrapJPText(ctx, t.tagline, W / 2, 720, W - 180, 44);
   ctx.restore();
 
-  // ---- Group tags ----
-  ctx.save();
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  const g1n = GROUP_NAMES[group];
-  const s1n = SUB_GROUP_NAMES[subGroup];
+  // ---- Group tags (optional) ----
+  if (config.groups.enabled) {
+    const g1n = config.groups.primary[group];
+    const s1n = config.groups.sub[subGroup];
+    if (g1n) {
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '22px "RocknRoll One"';
+      ctx.fillStyle = gc.main;
+      ctx.shadowColor = gc.main;
+      ctx.shadowBlur = 14;
+      ctx.fillText(`${code[0]} × ${code[1]}  ${g1n.ja} / ${g1n.en}`, W / 2, 850);
+      ctx.restore();
+    }
+    if (s1n) {
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = '20px "RocknRoll One"';
+      ctx.fillStyle = 'rgba(250, 248, 255, 0.75)';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
+      ctx.shadowBlur = 6;
+      ctx.fillText(`${code[2]} × ${code[3]}  ${s1n.ja} / ${s1n.en}`, W / 2, 894);
+      ctx.restore();
+    }
+  }
 
-  ctx.font = '22px "RocknRoll One"';
-  ctx.fillStyle = gc.main;
-  ctx.shadowColor = gc.main;
-  ctx.shadowBlur = 14;
-  ctx.fillText(`${code[0]} × ${code[1]}  ${g1n.ja} / ${g1n.en}`, W / 2, 850);
-
-  ctx.font = '20px "RocknRoll One"';
-  ctx.fillStyle = 'rgba(250, 248, 255, 0.75)';
-  ctx.shadowColor = 'rgba(255, 255, 255, 0.3)';
-  ctx.shadowBlur = 6;
-  ctx.fillText(`${code[2]} × ${code[3]}  ${s1n.ja} / ${s1n.en}`, W / 2, 894);
-  ctx.restore();
-
-  // ---- Footer ----
+  // ---- Footer (hashtag) ----
   ctx.save();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.font = '18px "RocknRoll One"';
   ctx.fillStyle = 'rgba(147, 136, 184, 0.8)';
-  ctx.fillText('#OGTI診断', W / 2, 990);
+  ctx.fillText(config.brand.hashtag, W / 2, 990);
   ctx.restore();
 
   return canvas;
@@ -608,7 +696,7 @@ function downloadShare() {
   const url = URL.createObjectURL(shareBlob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `OGTI_${code}.png`;
+  a.download = `${config.brand.name}_${code}.png`;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 
@@ -627,6 +715,11 @@ function downloadShare() {
   }
 }
 
+// ========== Boot ==========
+
+document.getElementById('btn-start').addEventListener('click', startWithDrama);
+document.getElementById('btn-back').addEventListener('click', back);
+document.getElementById('btn-restart').addEventListener('click', restart);
 document.getElementById('btn-share').addEventListener('click', openShareModal);
 document.getElementById('share-close').addEventListener('click', closeShareModal);
 document.getElementById('share-backdrop').addEventListener('click', closeShareModal);

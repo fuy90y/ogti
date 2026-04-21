@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>利用規約 — OGTI</title>
-  <meta name="description" content="OGTI (Oogiri Type Indicator) の利用規約。娯楽目的のジョーク診断であることと、利用にあたっての条件を記します。" />
+  <!-- title / description / 以下の空要素は末尾のインラインスクリプトが config.js から埋める -->
+  <title></title>
+  <meta name="description" content="" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Rampart+One&family=RocknRoll+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -19,7 +20,7 @@
 
     <article class="doc-body">
       <p class="doc-intro">
-        本規約は、Oogiri Type Indicator (以下「本サービス」) の利用条件を定めるものです。半分ジョーク・半分本気の診断サービスなので、規約もその塩梅でお読みください。ただし、法的に必要な部分は真面目に書いてありますので、利用にあたっては目を通してください。
+        本規約は、<span id="terms-brand-intro"></span> (以下「本サービス」) の利用条件を定めるものです。
       </p>
 
       <section class="doc-section">
@@ -102,18 +103,37 @@
       </section>
 
       <dl class="doc-meta">
-        <div><dt>運営者</dt><dd>OGTI 運営 (個人)</dd></div>
-        <div><dt>連絡先</dt><dd><a href="https://github.com/carrot-launcher/ogti/issues" target="_blank" rel="noopener noreferrer">GitHub リポジトリの Issues</a></dd></div>
-        <div><dt>最終更新</dt><dd>2026-04-21</dd></div>
+        <div><dt>運営者</dt><dd id="terms-owner"></dd></div>
+        <div><dt>連絡先</dt><dd><a id="terms-contact" href="" target="_blank" rel="noopener noreferrer"></a></dd></div>
+        <div><dt>最終更新</dt><dd id="terms-updated"></dd></div>
       </dl>
     </article>
 
     <div class="doc-footer">
       <a href="./" class="btn">← トップへ戻る</a>
-      <p class="doc-version">OGTI Terms v1.0</p>
+      <p class="doc-version" id="terms-version">Terms v1.0</p>
     </div>
 
-    <footer class="site-foot">OGTI — 大喜利タイプ診断</footer>
+    <footer class="site-foot" id="terms-foot"></footer>
   </main>
+
+  <script type="module">
+    import { config } from './data/config.js';
+    document.title = `利用規約 — ${config.brand.name}`;
+    const desc = document.querySelector('meta[name="description"]');
+    if (desc) desc.content = `${config.brand.name} (${config.brand.fullName}) の利用規約。`;
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('terms-brand-intro', config.brand.name);
+    set('terms-owner', config.ownership.orgName);
+    set('terms-updated', config.ownership.lastUpdated);
+    set('terms-version', `${config.brand.name} Terms v1.0`);
+    const contact = document.getElementById('terms-contact');
+    if (contact) {
+      contact.href = config.ownership.contactUrl;
+      contact.textContent = config.ownership.contactLabel;
+    }
+    const foot = document.getElementById('terms-foot');
+    if (foot) foot.textContent = `${config.brand.name} — ${config.brand.fullName}`;
+  </script>
 </body>
 </html>

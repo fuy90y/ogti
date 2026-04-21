@@ -17,14 +17,6 @@
   --pop: #ff66b3;
   --pole-left: #ff1a6b;
   --pole-right: #00eaff;
-  --pole-A: var(--pole-left);
-  --pole-U: var(--pole-left);
-  --pole-P: var(--pole-left);
-  --pole-T: var(--pole-left);
-  --pole-E: var(--pole-right);
-  --pole-R: var(--pole-right);
-  --pole-I: var(--pole-right);
-  --pole-D: var(--pole-right);
   --radius: 16px;
   --radius-lg: 24px;
   --display: 'Rampart One', 'Noto Sans JP', sans-serif;
@@ -241,7 +233,7 @@ body::after {
   font-size: 14px;
   position: relative;
 }
-.axes-intro li > span[data-pole] {
+.axes-intro li > span[data-side] {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -262,18 +254,12 @@ body::after {
   white-space: nowrap;
   text-shadow: 0 0 10px color-mix(in srgb, var(--pole-color) 60%, transparent);
 }
-.axes-intro li > span[data-pole] .pole-name {
+.axes-intro li > span[data-side="left"]  { --pole-color: var(--pole-left); }
+.axes-intro li > span[data-side="right"] { --pole-color: var(--pole-right); }
+.axes-intro li > span[data-side] .pole-name {
   justify-self: start;
 }
-.axes-intro li > span[data-pole="A"] { --pole-color: var(--pole-A); }
-.axes-intro li > span[data-pole="E"] { --pole-color: var(--pole-E); }
-.axes-intro li > span[data-pole="U"] { --pole-color: var(--pole-U); }
-.axes-intro li > span[data-pole="R"] { --pole-color: var(--pole-R); }
-.axes-intro li > span[data-pole="P"] { --pole-color: var(--pole-P); }
-.axes-intro li > span[data-pole="I"] { --pole-color: var(--pole-I); }
-.axes-intro li > span[data-pole="T"] { --pole-color: var(--pole-T); }
-.axes-intro li > span[data-pole="D"] { --pole-color: var(--pole-D); }
-.axes-intro li > span[data-pole] small {
+.axes-intro li > span[data-side] small {
   color: var(--pole-color);
   opacity: 0.95;
   justify-self: end;
@@ -605,13 +591,13 @@ body::after {
   border: 2px solid var(--muted);
   transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.likert-btn[data-value="-1.9"] .likert-dot,
-.likert-btn[data-value="1.9"] .likert-dot {
+.likert-btn[data-value="-5"] .likert-dot,
+.likert-btn[data-value="5"] .likert-dot {
   width: 16px;
   height: 16px;
 }
-.likert-btn[data-value="-2.9"] .likert-dot,
-.likert-btn[data-value="2.9"] .likert-dot {
+.likert-btn[data-value="-7"] .likert-dot,
+.likert-btn[data-value="7"] .likert-dot {
   width: 20px;
   height: 20px;
 }
@@ -638,12 +624,12 @@ body::after {
 .likert-btn { --selection-color: var(--accent); --selection-alpha: 100%; }
 .likert-btn.likert-a { --selection-color: var(--pole-left); }
 .likert-btn.likert-b { --selection-color: var(--pole-right); }
-.likert-btn[data-value="-0.9"],
-.likert-btn[data-value="0.9"]  { --selection-alpha: 55%; }
-.likert-btn[data-value="-1.9"],
-.likert-btn[data-value="1.9"]  { --selection-alpha: 78%; }
-.likert-btn[data-value="-2.9"],
-.likert-btn[data-value="2.9"]  { --selection-alpha: 100%; }
+.likert-btn[data-value="-3"],
+.likert-btn[data-value="3"]  { --selection-alpha: 55%; }
+.likert-btn[data-value="-5"],
+.likert-btn[data-value="5"]  { --selection-alpha: 78%; }
+.likert-btn[data-value="-7"],
+.likert-btn[data-value="7"]  { --selection-alpha: 100%; }
 
 .likert-btn.selected {
   background: color-mix(in srgb, var(--selection-color) var(--selection-alpha), var(--panel));
@@ -686,11 +672,6 @@ body::after {
   position: relative;
   overflow: hidden;
 }
-.result-card[data-group="AU"] { --group-color: #ff2e8c; --group-color-deep: #c01860; }
-.result-card[data-group="AR"] { --group-color: #ff7a1a; --group-color-deep: #c95200; }
-.result-card[data-group="EU"] { --group-color: #a44dff; --group-color-deep: #6a1fb8; }
-.result-card[data-group="ER"] { --group-color: #00c8ff; --group-color-deep: #008fb8; }
-
 .type-watermark {
   position: absolute;
   top: 50%;
@@ -869,14 +850,8 @@ body::after {
   color: var(--gold);
   text-shadow: 0 0 10px var(--gold), 0 0 22px rgba(255, 230, 58, 0.35);
 }
-.axis-row[data-winner="A"] { --pole-color: var(--pole-A); }
-.axis-row[data-winner="E"] { --pole-color: var(--pole-E); }
-.axis-row[data-winner="U"] { --pole-color: var(--pole-U); }
-.axis-row[data-winner="R"] { --pole-color: var(--pole-R); }
-.axis-row[data-winner="P"] { --pole-color: var(--pole-P); }
-.axis-row[data-winner="I"] { --pole-color: var(--pole-I); }
-.axis-row[data-winner="T"] { --pole-color: var(--pole-T); }
-.axis-row[data-winner="D"] { --pole-color: var(--pole-D); }
+.axis-row[data-winner-side="left"]  { --pole-color: var(--pole-left); }
+.axis-row[data-winner-side="right"] { --pole-color: var(--pole-right); }
 .axis-labels {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

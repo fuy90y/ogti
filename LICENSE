@@ -1,13 +1,9 @@
-OGTI — Oogiri Type Indicator
-Copyright (c) 2026 carrot-launcher
-
 SPDX-License-Identifier: CC-BY-NC-ND-4.0
 
-This work, including all source code, text content (questions, type
-definitions, descriptive copy, interface text), visual design, and
-generated images, is licensed under the Creative Commons
-Attribution-NonCommercial-NoDerivatives 4.0 International License
-(CC BY-NC-ND 4.0).
+This work — including the framework source code, visual design,
+and the example diagnostic content bundled with it — is licensed under
+the Creative Commons Attribution-NonCommercial-NoDerivatives 4.0
+International License (CC BY-NC-ND 4.0).
 
 ==============================================================================
 
@@ -17,10 +13,10 @@ You are free to:
 
 Under the following terms:
 
-  * Attribution — You must give appropriate credit (author name and a
-    link to this repository), provide a link to the license, and indicate
-    if any changes were made. You may do so in any reasonable manner, but
-    not in any way that suggests the licensor endorses you or your use.
+  * Attribution — You must give appropriate credit (link to this
+    repository), provide a link to the license, and indicate if any
+    changes were made. You may do so in any reasonable manner, but not
+    in any way that suggests the licensor endorses you or your use.
 
   * NonCommercial — You may not use the material for commercial purposes.
 
@@ -52,8 +48,10 @@ For a human-readable summary, see:
 
 ==============================================================================
 
-Additional service-level terms of use apply to users of the hosted
-service. See:
+Forks that create a new diagnostic under this framework may add their
+own copyright notice and attribution for the diagnostic content
+(questions, type definitions, descriptive copy) they author. The
+framework itself remains licensed under CC BY-NC-ND 4.0.
 
-  ./terms.html
-  https://github.com/carrot-launcher/ogti/blob/master/terms.html
+Additional service-level terms of use apply to users of the hosted
+service. See ./terms.html.

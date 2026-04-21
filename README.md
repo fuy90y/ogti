@@ -1,13 +1,36 @@
-# OGTI — 大喜利タイプ診断
+# 4軸16タイプ診断フレームワーク
 
-半分ジョーク、半分本気の **Oogiri Type Indicator**。大喜利の流儀を 4軸 × 16タイプで判定します。
+MBTI風の **4軸 × 16タイプ** 構造を持つジョーク診断を作るためのフレームワーク。ブラウザだけで動く静的サイト。
 
-🔗 **[診断を試す →](https://carrot-launcher.github.io/ogti/)**
+## カスタマイズ
+
+フォーク後に編集するファイルは **`data/` 配下の3つ** だけ:
+
+| ファイル | 内容 |
+|---|---|
+| `data/config.js` | ブランド / 4軸 / グループ / 結果セクション / 利用規約情報 |
+| `data/questions.js` | 全20問の設問と回答 |
+| `data/types.js` | 16タイプそれぞれの名前・タグライン・強み/癖/相方 |
+
+軸の数 (4)、タイプ数 (16)、問題数 (20)、採点ロジック、画面デザインはフレームワーク側で固定。
+
+## ローカル実行
+
+ES modules を使うため `file://` では動きません。HTTPサーバを立ててブラウザで開いてください。
+
+```bash
+python -m http.server 8000   # Python 3
+npx serve                    # Node.js
+```
+
+VS Code の **Live Server** 拡張でも可。
+
+## デプロイ
+
+GitHub Pages にそのまま push して配信可能。ビルドステップなし。
 
 ## ライセンス
 
-Copyright (c) 2026 carrot-launcher / [CC BY-NC-ND 4.0](./LICENSE) / [利用規約](./terms.html)
+[CC BY-NC-ND 4.0](./LICENSE) / [利用規約](./terms.html)
 
-## フィードバック
-
-改善案・バグ報告は [Issues](https://github.com/carrot-launcher/ogti/issues) へ。
+非商用・改変なしでの共有は歓迎。商用利用・改変しての再配布は禁止。
