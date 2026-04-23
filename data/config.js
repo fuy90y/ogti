@@ -40,7 +40,7 @@ export const config = {
   landing: {
     // 2段落構成。HTMLタグ (strong等) 使用可
     lead: [
-      'OGTI は、あなたの<strong>大喜利の流儀</strong>を4軸16タイプで診断します。',
+      'OGTI は、あなたの<strong>大喜利の流儀</strong>を4軸16のタイプで診断します。',
       `全${questions.length}問。お題と回答を読み、どちら寄りかを 6段階で選んでください。`,
     ],
     axesHeading: '大喜利の流儀 4つの軸',
