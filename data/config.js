@@ -61,7 +61,7 @@ export const config = {
     {
       key: 'AE',
       title: { en: 'NERVE', ja: '度胸' },
-      left:  { pole: 'A', label: 'Aggressive',  ja: '挑戦' },
+      left:  { pole: 'A', label: 'Aggressive',  ja: '強攻' },
       right: { pole: 'E', label: 'Elegant',     ja: '洗練' },
     },
     {
