@@ -68,15 +68,15 @@ export const questions = [
     prompt: '客から欲しい反応は？',
     choices: [
       { pole: 'R', text: '「たしかに！」という共感の笑い' },
-      { pole: 'U', text: '「なんやそれ！」というざわめき' },
+      { pole: 'U', text: '「なんやそれ！」という驚きの笑い' },
     ],
   },
   {
     axis: 2,
     prompt: 'お題: 「学校の七不思議」。書くならどっち？',
     choices: [
-      { pole: 'R', text: '三番目のトイレのドアだけ、なぜか開かない' },
-      { pole: 'U', text: '校長の影だけが、常に西の方角へ伸びている' },
+      { pole: 'R', text: '牛乳で米いけたこと' },
+      { pole: 'U', text: 'ピアノが怖サ進行で鳴りだす' },
     ],
   },
   {
@@ -91,8 +91,8 @@ export const questions = [
     axis: 2,
     prompt: 'お題: 「辞書に新しく載りそうな見出し語」。書きたいのは？',
     choices: [
-      { pole: 'R', text: '月曜倦怠感 (つきようけんたいかん)' },
-      { pole: 'U', text: '雨乞いの後悔 (あまごいのこうかい)' },
+      { pole: 'R', text: '「冤会」誰も悪くないのに空気が悪い食事会' },
+      { pole: 'U', text: '「※※CLUB」注意して浪漫飛行する' },
     ],
   },
 
@@ -109,8 +109,8 @@ export const questions = [
     axis: 3,
     prompt: 'お題: 「新しい国民の祝日」。書くならどっち？',
     choices: [
-      { pole: 'P', text: 'ズボン前後逆の日' },
-      { pole: 'I', text: '自分が他人だったら記念日' },
+      { pole: 'P', text: 'ホリデー記念日' },
+      { pole: 'I', text: 'みどりの日があおの日にもなる' },
     ],
   },
   {
