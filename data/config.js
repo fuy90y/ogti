@@ -128,7 +128,7 @@ export const config = {
   ownership: {
     orgName:      'OGTI 運営 (個人)',                                     // 規約表示の運営者名
     contactLabel: 'GitHub リポジトリの Issues',                           // 連絡先リンクの表示テキスト
-    contactUrl:   'https://github.com/fuy90y/ogti/blob/master/data/config.js',       // 連絡先リンクの href
+    contactUrl:   'https://fuy90y.github.io/ogti/',       // 連絡先リンクの href
     lastUpdated:  '2026-04-21',                                           // 規約の最終更新日
   },
 };
