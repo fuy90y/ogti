@@ -33,7 +33,7 @@ export const config = {
   // ---- ページメタ (title / description) ----
   meta: {
     title: 'OGTI — 大喜利タイプ診断',
-    description: 'Oogiri Type Indicator — 4軸16のタイプで、あなたの大喜利の流儀を診断するよ。',
+    description: 'Oogiri Type Indicator — 4軸16のタイプで、あなたの大喜利の流儀を診断します。',
   },
 
   // ---- ランディング画面のコピー ----
