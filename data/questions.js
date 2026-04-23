@@ -76,7 +76,7 @@ export const questions = [
     prompt: 'お題: 「学校の七不思議」。書くならどっち？',
     choices: [
       { pole: 'R', text: '牛乳でお米を食えたこと' },
-      { pole: 'U', text: 'スク水しゃぶり男の存在' },
+      { pole: 'U', text: '肉みたいに泳いでた' },
     ],
   },
   {
