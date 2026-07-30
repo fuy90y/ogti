@@ -49,7 +49,7 @@ export const config = {
 
   // ---- ドラムロール (診断開始時の演出) ----
   drumroll: {
-    line1: '続いてのお題は、',
+    line1: 'お題はーーーー！',
     line2: 'こちら！！',
   },
 
