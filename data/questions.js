@@ -47,7 +47,7 @@ export const questions = [
   },
   {
     axis: 1,
-    prompt: 'お題: 「厳しい審査員がする大喜利の講評」。書きたいのは？',
+    prompt: 'あなたが大喜利を厳しく講評するとして、言いたいのは？',
     choices: [
       { pole: 'A', text: '「…これを書こうと思った瞬間を、まず恥じなさい」' },
       { pole: 'E', text: '「巧い。巧いが、昨日もどこかで聞いた気がしますね」' },
@@ -97,7 +97,7 @@ export const questions = [
   },
   {
     axis: 2,
-    prompt: '自分にしか通じないマニアックなネタを仕込むことについて',
+    prompt: '限られた人にしか通じないマニアックなネタを仕込むことについて',
     choices: [
       { pole: 'R', text: '避ける。全員に届くほうが強い' },
       { pole: 'U', text: '入れる。刺さる人に刺さればいい' },
@@ -157,10 +157,10 @@ export const questions = [
   // --- 軸4: Theatrical(T) vs Descriptive(D) ---
   {
     axis: 4,
-    prompt: 'お題: 「こんな店員は嫌だ」。近いのは？',
+    prompt: 'お題: 「こんなスーパーの店員は嫌だ」。近いのは？',
     choices: [
-      { pole: 'T', text: '(店員として)「あっ…あの…はい…あの…はい…」' },
-      { pole: 'D', text: 'レジを打つたびに「行きます！」と叫ぶ店員' },
+      { pole: 'T', text: '「次のboy？ほうら、こちらへ」' },
+      { pole: 'D', text: '' },
     ],
   },
   {
