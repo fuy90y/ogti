@@ -53,7 +53,23 @@ export const questions = [
       { pole: 'E', text: '「巧い。巧いが、昨日もどこかで聞いた気がしますね」' },
     ],
   },
-
+{
+    axis: 1,
+    prompt: 'お題をもらったとき、最初にやることは？',
+    choices: [
+      { pole: 'A', text: 'とにかく何か出す' },
+      { pole: 'E', text: '頭の中で整理する' },
+    ],
+  },
+  {
+     axis: 1,
+    prompt: '滑ったとき、どう感じる？',
+    choices: [
+      { pole: 'A', text: '次で取り返せばいい' },
+      { pole: 'E', text: 'なぜ滑ったか分析する' },
+    ],
+  },
+  
   // --- 軸2: Unique(U) vs Relatable(R) ---
   {
     axis: 2,
