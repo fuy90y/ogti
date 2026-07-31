@@ -141,8 +141,8 @@ export const questions = [
     axis: 3,
     prompt: '好きな回答の長さは？',
     choices: [
-      { pole: 'P', text: 'インパクトのある3～10文字' },
-      { pole: 'I', text: '丁寧に構築された8～15文字' },
+      { pole: 'P', text: 'インパクトのある3～9文字' },
+      { pole: 'I', text: '丁寧に構築された9～15文字' },
     ],
   },
   {
@@ -160,7 +160,7 @@ export const questions = [
     prompt: 'お題: 「こんなスーパーの店員は嫌だ」。近いのは？',
     choices: [
       { pole: 'T', text: '「次のboy？ほうら、こちらへ」' },
-      { pole: 'D', text: '泣きながら半額シールをはがしていく' },
+      { pole: 'D', text: '客の鼻歌に乗っかる' },
     ],
   },
   {
