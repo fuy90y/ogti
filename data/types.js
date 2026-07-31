@@ -14,7 +14,7 @@
 export const types = {
   AUPT: {
     symbol: '狂',
-    name: '爆走ピエロ',
+    name: '奇才',
     tagline: '客を置き去りに、全力で舞台を駆け回る異形の芸人',
     headline: '<strong>勢いで時空を歪ませる</strong>、制御不能の笑いの台風。',
     strength:
@@ -33,7 +33,7 @@ export const types = {
 
   AUPD: {
     symbol: '奇',
-    name: '奇想観測者',
+    name: '発明家',
     tagline: '異世界の風景を平然とした顔でスケッチする描写家',
     headline: '<strong>他の誰も立っていない角度</strong>から、世界を静かにズラして見せる人。',
     strength:
@@ -52,7 +52,7 @@ export const types = {
 
   AUIT: {
     symbol: '異',
-    name: '前衛の俳優',
+    name: '預言者',
     tagline: '誰も見たことのない役を、全身で演じきる挑戦者',
     headline: '<strong>未知の役に飛び込む勇気</strong>で、奇抜をリアルに変える舞台人。',
     strength:
@@ -71,7 +71,7 @@ export const types = {
 
   AUID: {
     symbol: '論',
-    name: '狂気の評論家',
+    name: '異端',
     tagline: '異界の出来事を、冷静な分析で解説する論客',
     headline: '<strong>真顔の知性</strong>で飛躍を解剖する、怜悧なジョーカー。',
     strength:
@@ -90,7 +90,7 @@ export const types = {
 
   ARPT: {
     symbol: '熱',
-    name: '叫ぶ庶民派',
+    name: '道化',
     tagline: '誰もが知っている題材を、全力の演技で笑いに変える熱血',
     headline: '<strong>共感 × 熱量</strong>で、初見の観客まで巻き込む舞台の突進力。',
     strength:
@@ -128,7 +128,7 @@ export const types = {
 
   ARIT: {
     symbol: '挑',
-    name: '挑発的なホスト',
+    name: '刺客',
     tagline: '客を煽りながら巻き込む、計算された司会者',
     headline: '<strong>空気を支配する挑発力</strong>で、会場ごと笑いに連れていく司会者。',
     strength:
@@ -147,7 +147,7 @@ export const types = {
 
   ARID: {
     symbol: '皮',
-    name: '社会の皮肉屋',
+    name: '論客',
     tagline: '共通の現実を冷笑的な言葉で切り取る論評家',
     headline: '<strong>日常に一滴の毒</strong>を垂らして、大人の笑いに仕立てる論評家。',
     strength:
@@ -166,7 +166,7 @@ export const types = {
 
   EUPT: {
     symbol: '妖',
-    name: '妖精キャラ',
+    name: '貴族',
     tagline: 'ふわりと舞い降りて、異界のルールで笑わせる不思議な存在',
     headline: '<strong>そこにいるだけで空気が変わる</strong>、ジャンル不詳の愛され存在。',
     strength:
@@ -185,7 +185,7 @@ export const types = {
 
   EUPD: {
     symbol: '夢',
-    name: '夢想の画家',
+    name: '幻想家',
     tagline: '不思議な情景を、丁寧な筆致でスケッチする静かな作家',
     headline: '<strong>美しい異常</strong>を描き出す、余韻型の静かな作家。',
     strength:
@@ -204,7 +204,7 @@ export const types = {
 
   EUIT: {
     symbol: '幻',
-    name: '幻燈演出家',
+    name: '詩人',
     tagline: '独自の世界観を美しく演じて見せる、舞台の幻術師',
     headline: '<strong>設計された一瞬</strong>で観客を魅了する、舞台の幻術師。',
     strength:
@@ -223,7 +223,7 @@ export const types = {
 
   EUID: {
     symbol: '詩',
-    name: '静かな詩人',
+    name: '賢者',
     tagline: '短い言葉で奇妙な世界を完成させる、引き算の達人',
     headline: '<strong>余白こそ笑いの本体</strong>と知っている、引き算の達人。',
     strength:
@@ -242,7 +242,7 @@ export const types = {
 
   ERPT: {
     symbol: '愛',
-    name: '愛されキャラ',
+    name: '人気者',
     tagline: '誰もが知る景色を、親しみやすい演技で届ける舞台人',
     headline: '<strong>安心して笑える温度</strong>で場を温める、誰もが好きになる舞台人。',
     strength:
@@ -261,7 +261,7 @@ export const types = {
 
   ERPD: {
     symbol: '共',
-    name: 'あるある職人',
+    name: '俳優',
     tagline: '日常の隙間を言葉で切り取る、共感笑いのプロ',
     headline: '<strong>万人の記憶の隙間</strong>を言葉で拾い上げる、共感笑いのプロ。',
     strength:
@@ -280,7 +280,7 @@ export const types = {
 
   ERIT: {
     symbol: '芸',
-    name: '名人芸のMC',
+    name: '紳士',
     tagline: '洗練された所作で共通の景色を演じる、ベテランの舞台人',
     headline: '<strong>計算された間と品格</strong>で笑いを託される、ベテランの舞台人。',
     strength:
@@ -290,16 +290,16 @@ export const types = {
       '気をつけたいのは、<strong>安定の代償</strong>です。常に及第点を取れることは、同時に「意外性の低さ」を意味します。観客は時として、満点より<strong>「何が出るか分からないワクワク」</strong>を求めている——このズレを意識しておきましょう。\n\n' +
       'また、<strong>若い場や荒れた場</strong>に入ると、品格が逆に浮くことも。適応力を落とさないために、ときには崩し方の練習もしてみてください。名人ほど、遊びが似合います。',
     partner:
-      '相性が良いのは <strong>AUPD (奇想観測者)</strong>。あなたの安定した舞台に、<strong>予測不能な風景を差し込んでくれる存在</strong>です。名人と異物のコンビネーションは、そのまま<strong>王道 × 異端</strong>の黄金律です。',
+      '相性が良いのは <strong>AUPD (発明家)</strong>。あなたの安定した舞台に、<strong>予測不能な風景を差し込んでくれる存在</strong>です。名人と異物のコンビネーションは、そのまま<strong>王道 × 異端</strong>の黄金律です。',
     strengthShort: '計算された間と品格。派手さより精度、奇抜さより安定で、お題を投げられた瞬間に観客は「この人なら最低でも満点に近い答えを出す」と直感する。公開収録・賞レース・格式のある舞台ほど他の追随を許さない間合いで、プロフェッショナルな笑いを担う適任者。',
     weaknessShort: '安定しすぎて「何が出るか分からない」ワクワクを削ってしまいがち。観客は時として満点よりも予測不能な瞬間を求めている。若い場や荒れた場に入ると品格が逆に浮くこともあるので、適応力を保つために崩し方の練習も意識的に取り入れたい。',
-    partnerShort:  'AUPD（奇想観測者）。あなたの安定した舞台に予測不能な風景を差し込んでくれる存在。名人と異物のコンビネーションは、そのまま王道×異端の黄金律になる。',
+    partnerShort:  'AUPD（発明家）。あなたの安定した舞台に予測不能な風景を差し込んでくれる存在。名人と異物のコンビネーションは、そのまま王道×異端の黄金律になる。',
     tip: '期待通りでも、それは十分強い。',
   },
 
   ERID: {
     symbol: '筆',
-    name: '静観する戯作者',
+    name: '教授',
     tagline: '共有された現実を、知的で洗練された筆致で描く観察者',
     headline: '<strong>読み返したくなる完成度</strong>で現実を描く、知性の戯作者。',
     strength:
@@ -309,10 +309,10 @@ export const types = {
       '弱点は、<strong>熱の不足</strong>です。距離を保つ姿勢は上品ですが、同時に「体温が伝わらない」と感じられやすい。<strong>観客は、書き手の感情の揺れに笑う</strong>こともあるのだと忘れないでください。\n\n' +
       'また、<strong>即席の場で硬い</strong>点にも注意。即興で言葉を組み立てるより、考えて書く方が得意なタイプです。喋り系の現場に入るときは、意識的にテンポを落としてもらう工夫があると安心です。',
     partner:
-      '相性が良いのは <strong>AUPT (爆走ピエロ)</strong>。あなたの冷静な筆致に、<strong>熱と体温を流し込んでくれる存在</strong>です。あなたが整え、相方が暴れる——役割が綺麗に分かれる、伝統的な最強コンビの構造です。',
+      '相性が良いのは <strong>AUPT (奇才)</strong>。あなたの冷静な筆致に、<strong>熱と体温を流し込んでくれる存在</strong>です。あなたが整え、相方が暴れる——役割が綺麗に分かれる、伝統的な最強コンビの構造です。',
     strengthShort: '綿密に組まれた言葉と構文。選ばれた語彙・整った構文・適切な距離感すべてが綿密に組まれていて、読むほどに味が出る回答を作れる後から効く笑いの設計者。アーカイブされて繰り返し読まれる強さがあり、時間を味方につけると利息のように笑いが増えていく。',
     weaknessShort: '距離を取りすぎて、体温の伝わる笑いには届きにくい。観客は書き手の感情の揺れに笑うこともあると忘れないでおきたい。即席の場で硬くなる傾向もあり、喋り系の現場に入るときは意識的にテンポを落としてもらう工夫があると持ち味が出しやすい。',
-    partnerShort:  'AUPT（爆走ピエロ）。あなたの冷静な筆致に熱と体温を流し込んでくれる相方。あなたが整え相方が暴れる、役割が綺麗に分かれる伝統的な最強コンビの構造。',
+    partnerShort:  'AUPT（奇才）。あなたの冷静な筆致に熱と体温を流し込んでくれる相方。あなたが整え相方が暴れる、役割が綺麗に分かれる伝統的な最強コンビの構造。',
     tip: '距離を保ったまま、体温を通わせろ。',
   },
 };
