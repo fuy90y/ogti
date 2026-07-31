@@ -172,6 +172,22 @@ export const questions = [
     ],
   },
   {
+  axis: 4,
+    prompt: 'ドラゴンに挑むおばさん',
+    choices: [
+      { pole: 'T', text: '' },
+      { pole: 'D', text: '' },
+    ],
+  },
+  {
+    axis: 4,
+    prompt: '長文回答のとき、どうボケる？',
+    choices: [
+      { pole: 'T', text: '語り口で引き込む' },
+      { pole: 'D', text: '情報量で押し切る' },
+    ],
+  },
+  {
     axis: 4,
     prompt: '自分の回答に出やすい癖は？',
     choices: [
