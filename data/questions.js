@@ -47,7 +47,7 @@ export const questions = [
   },
   {
     axis: 1,
-    prompt: 'あなたが大喜利を厳しく講評するとして、言いたいのは？',
+    prompt: 'あなたが大喜利を厳しく講評するとして、言うのは？',
     choices: [
       { pole: 'A', text: '「…これを書こうと思った瞬間を、まず恥じなさい」' },
       { pole: 'E', text: '「巧い。巧いが、昨日もどこかで聞いた気がしますね」' },
@@ -141,8 +141,8 @@ export const questions = [
     axis: 3,
     prompt: '好きな回答の長さは？',
     choices: [
-      { pole: 'P', text: '短くて勢いのある一言' },
-      { pole: 'I', text: '丁寧に構築された一文' },
+      { pole: 'P', text: 'インパクトのある3～10文字' },
+      { pole: 'I', text: '丁寧に構築された8～15文字' },
     ],
   },
   {
@@ -160,7 +160,7 @@ export const questions = [
     prompt: 'お題: 「こんなスーパーの店員は嫌だ」。近いのは？',
     choices: [
       { pole: 'T', text: '「次のboy？ほうら、こちらへ」' },
-      { pole: 'D', text: '' },
+      { pole: 'D', text: '泣きながら半額シールをはがしていく' },
     ],
   },
   {
