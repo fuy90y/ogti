@@ -175,8 +175,8 @@ export const questions = [
   axis: 4,
     prompt: 'ドラゴンに挑むおばさん',
     choices: [
-      { pole: 'T', text: '' },
-      { pole: 'D', text: '' },
+      { pole: 'T', text: '今夜はワイルドな角煮が作れそうね' },
+      { pole: 'D', text: '逆鱗を正しい位置に戻す' },
     ],
   },
   {
