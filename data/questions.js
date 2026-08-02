@@ -147,10 +147,10 @@ export const questions = [
   },
   {
     axis: 3,
-    prompt: 'お題: 「絶対に実用化されない、ひみつ道具」。書きたいのは？',
+    prompt: 'お題: 「詩人とシジミの違いを教えてください」。書きたいのは？',
     choices: [
-      { pole: 'P', text: 'だんだん薄くなる毛布' },
-      { pole: 'I', text: 'やる気スイッチを押すとやる気がなくなる装置' },
+      { pole: 'P', text: 'ぴょえーーーー' },
+      { pole: 'I', text: 'IQナリ' },
     ],
   },
 
