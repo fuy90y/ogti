@@ -185,20 +185,15 @@ applyThemeAndPalette();
 
 hydrateLanding();
 
-// ---- デバッグモード (localhost 限定) ----
-// 127.0.0.0/8 / localhost / ::1 からアクセスしたときだけ URL ?type=AUPT を有効にする。
-// これにより本番ドメインではテストモードが一切発火しない。
-function isLocalAccess() {
-  const h = location.hostname;
-  return h === 'localhost' || h === '::1' || /^127\./.test(h);
-}
+// ---- URL ?type= によるタイプ直指定 ----
+// ?type=AUPT のように正しいタイプコードが指定されたとき、クイズをスキップしてその結果画面に直行する。
+// 他人とリンク共有する用途や、特定のタイプをプレビューしたいときに使える。
 const TEST_TYPE = (() => {
-  if (!isLocalAccess()) return null;
   const q = new URL(location.href).searchParams.get('type');
   return q && types[q] ? q : null;
 })();
 
-// localhost + ?type=AUPT 指定時はクイズをスキップして結果画面へ直行
+// ?type=AUPT 指定時はクイズをスキップして結果画面へ直行
 if (TEST_TYPE) {
   requestAnimationFrame(() => {
     renderResult();
@@ -401,8 +396,9 @@ function renderResult(overrideCode = null) {
   const notice = document.getElementById('browse-notice');
   const btnShare = document.getElementById('btn-share');
   if (notice)   notice.hidden   = !isBrowsing;
-  // 「もう一度診断する」は常時見せる。シェアだけは他人のページで押せても意味が曖昧なので隠す
-  if (btnShare) btnShare.hidden =  isBrowsing;
+  // 「もう一度診断する」は常時見せる。シェアだけは他人のページで押せても意味が曖昧なので隠す。
+  // ただし ?type= 指定中 (テスト/プレビュー目的) は grid で他タイプに移動しても常時表示する。
+  if (btnShare) btnShare.hidden =  isBrowsing && !TEST_TYPE;
 
   const card = document.getElementById('result-card');
   // グループ色をインラインで注入。
