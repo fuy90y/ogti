@@ -149,8 +149,8 @@ export const questions = [
     axis: 3,
     prompt: 'お題: 「詩人とシジミの違いを教えてください」。書きたいのは？',
     choices: [
-      { pole: 'P', text: 'ぴょえーーーー' },
-      { pole: 'I', text: 'IQナリ' },
+      { pole: 'P', text: '詩人を見た私→しみじみ…　シジミを見た俺→シジミ' },
+      { pole: 'I', text: '砂を握るか砂を抜くか' },
     ],
   },
 
