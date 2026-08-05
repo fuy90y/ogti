@@ -15,10 +15,10 @@ export const questions = [
   // --- 軸1: Aggressive(A) vs Elegant(E) ---
   {
     axis: 1,
-    prompt: 'お題: 「こんな葬式は嫌だ」。近いのはどっち？',
+    prompt: 'お題: 「紙飛行機に乗ってきた人」。近いのはどっち？',
     choices: [
-      { pole: 'A', text: '故人が薄目を開けて「チッ、遅かったか」とつぶやく' },
-      { pole: 'E', text: '焼香の灰が、なぜかキラキラ光っている' },
+      { pole: 'A', text: '中身がペラペラの男' },
+      { pole: 'E', text: 'ペーパードライバーを自称する' },
     ],
   },
   {
@@ -176,7 +176,7 @@ export const questions = [
     prompt: 'ドラゴンに挑むおばさん',
     choices: [
       { pole: 'T', text: '今夜はワイルドな角煮が作れそうね' },
-      { pole: 'D', text: '逆鱗を正しい位置に戻す' },
+      { pole: 'D', text: '逆鱗を正しい向きに戻す' },
     ],
   },
   {
