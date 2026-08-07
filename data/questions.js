@@ -107,8 +107,8 @@ export const questions = [
     axis: 2,
     prompt: 'お題: 「辞書に新しく載りそうな見出し語」。書きたいのは？',
     choices: [
-      { pole: 'R', text: '「冤会」誰も悪くないのに空気が悪い食事会' },
-      { pole: 'U', text: '「※※CLUB」注意して浪漫飛行する' },
+      { pole: 'R', text: '「※※CLUB」注意して浪漫飛行する' },
+      { pole: 'U', text: '「我慢パプリカ」ピーマンとして生きる決意' },
     ],
   },
 
